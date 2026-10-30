@@ -9,6 +9,7 @@
 [![React 19](https://img.shields.io/badge/React_19-Vite_6-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Vercel Deployed](https://img.shields.io/badge/Vercel-ghost--in--the--machine--kappa.vercel.app-black?style=for-the-badge&logo=vercel&logoColor=white)](https://ghost-in-the-machine-kappa.vercel.app)
+[![CI Pipeline](https://img.shields.io/badge/CI-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/Dev-Suraj-Dhawal/ghost-in-the-machine/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 <p align="center">

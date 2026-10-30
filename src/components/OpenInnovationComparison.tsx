@@ -170,3 +170,4 @@ export default function OpenInnovationComparison({ config, onConfigChange }: Ope
     </div>
   );
 }
+

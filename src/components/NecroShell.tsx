@@ -351,3 +351,4 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
     </div>
   );
 }
+
