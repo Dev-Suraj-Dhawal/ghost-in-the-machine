@@ -301,3 +301,4 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
     </div>
   );
 }
+

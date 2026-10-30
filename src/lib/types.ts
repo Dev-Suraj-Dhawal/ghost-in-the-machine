@@ -60,3 +60,4 @@ export interface AIInferenceConfig {
   openApiKey?: string;
   temperature: number;
 }
+

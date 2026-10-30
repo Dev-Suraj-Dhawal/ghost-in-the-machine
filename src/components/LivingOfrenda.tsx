@@ -705,3 +705,4 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
     </div>
   );
 }
+
