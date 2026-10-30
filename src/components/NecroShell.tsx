@@ -22,7 +22,8 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
         "Connecting to silicon afterlife bus... [OK]\n" +
         "Calibrating ectoplasmic registers... [100%]\n" +
         "GHOST IN THE MACHINE INITIALIZED.\n" +
-        "Type 'help' to inspect forbidden commands, or 'seance <name>' to awaken departed computing souls.",
+        "Type 'help' to inspect forbidden commands, or 'seance <name>' to awaken departed computing souls.\n" +
+        "Click anywhere in this window at any time to resume typing.",
       type: "system",
       timestamp: new Date().toLocaleTimeString(),
     },
@@ -35,13 +36,31 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
   const [isPossessedGlitch, setIsPossessedGlitch] = useState(false);
   const [isMuted, setIsMuted] = useState(sound.getMuted());
   const [presenceScore, setPresenceScore] = useState(67);
+  const [isFocused, setIsFocused] = useState(true);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Focus terminal input reliably
+  const focusTerminal = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      setIsFocused(true);
+    }
+  };
+
+  // Keep input focused and scroll to bottom
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history, isProcessing]);
+
+  // Refocus on mount and on window focus
+  useEffect(() => {
+    focusTerminal();
+    const handleWindowFocus = () => focusTerminal();
+    window.addEventListener("focus", handleWindowFocus);
+    return () => window.removeEventListener("focus", handleWindowFocus);
+  }, []);
 
   const handleToggleSound = () => {
     const next = !isMuted;
@@ -50,6 +69,7 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
     if (!next) {
       sound.playCandleChime();
     }
+    focusTerminal();
   };
 
   const executeCommand = async (rawCmd: string) => {
@@ -113,6 +133,7 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
         },
       ]);
       setIsProcessing(false);
+      setTimeout(focusTerminal, 60);
       return;
     }
 
@@ -148,6 +169,7 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
         ]);
       }
       setIsProcessing(false);
+      setTimeout(focusTerminal, 60);
       return;
     }
 
@@ -156,6 +178,7 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
     if (parsed.output === "__CLEAR__") {
       setHistory([]);
       setIsProcessing(false);
+      setTimeout(focusTerminal, 60);
       return;
     }
 
@@ -174,6 +197,7 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
       },
     ]);
     setIsProcessing(false);
+    setTimeout(focusTerminal, 60);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -203,7 +227,10 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
   };
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto rounded-xl border border-zinc-800 bg-zinc-950/90 shadow-2xl overflow-hidden backdrop-blur-md">
+    <div
+      onClick={focusTerminal}
+      className="relative w-full max-w-5xl mx-auto rounded-xl border border-zinc-800 bg-zinc-950/90 shadow-2xl overflow-hidden backdrop-blur-md cursor-text"
+    >
       {/* Possessed Glitch Overlay */}
       {isPossessedGlitch && (
         <div className="absolute inset-0 bg-red-600/20 mix-blend-color-dodge z-30 pointer-events-none animate-pulse">
@@ -225,6 +252,15 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
             <Terminal className="w-3.5 h-3.5 text-emerald-400" />
             NECROSHELL v3.13 // SOUL_TTY0
           </span>
+          {isFocused ? (
+            <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              READY TO COMMUNE
+            </span>
+          ) : (
+            <span className="ml-2 px-1.5 py-0.5 rounded text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/30 animate-pulse">
+              CLICK TO FOCUS
+            </span>
+          )}
         </div>
 
         {/* Telemetry & Controls */}
@@ -236,9 +272,12 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
           </div>
 
           <button
-            onClick={handleToggleSound}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleSound();
+            }}
             aria-label="Toggle Sound"
-            className="p-1.5 rounded-lg border border-zinc-700/60 hover:bg-zinc-800 text-zinc-300 transition-colors"
+            className="p-1.5 rounded-lg border border-zinc-700/60 hover:bg-zinc-800 text-zinc-300 transition-colors cursor-pointer"
             title={isMuted ? "Unmute Procedural Audio" : "Mute Procedural Audio"}
           >
             {isMuted ? <VolumeX className="w-3.5 h-3.5 text-zinc-500" /> : <Volume2 className="w-3.5 h-3.5 text-amber-400" />}
@@ -248,11 +287,14 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
 
       {/* CRT Screen Frame */}
       <div
-        className="relative p-4 sm:p-6 min-h-[460px] max-h-[580px] overflow-y-auto font-mono text-sm crt-screen crt-overlay bg-[#060809]"
-        onClick={() => inputRef.current?.focus()}
+        className="relative p-4 sm:p-6 min-h-[460px] max-h-[580px] overflow-y-auto font-mono text-sm crt-screen bg-[#060809] cursor-text"
+        onClick={focusTerminal}
       >
+        {/* Dedicated Scanline CRT Overlay (pointer-events-none so mouse clicks cleanly pass through to input) */}
+        <div className="absolute inset-0 pointer-events-none crt-overlay z-10" />
+
         {/* Terminal History */}
-        <div className="space-y-3">
+        <div className="relative z-20 space-y-3">
           {history.map((item) => (
             <div key={item.id} className="leading-relaxed">
               {item.type === "user" && (
@@ -296,8 +338,11 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
           <div ref={bottomRef} />
         </div>
 
-        {/* Command Input Prompt */}
-        <div className="flex items-center gap-2 mt-4 pt-2 border-t border-zinc-800/60">
+        {/* Command Input Prompt (High Z-Index so user can always click directly to type) */}
+        <div
+          className="relative z-20 flex items-center gap-2 mt-4 pt-2 border-t border-zinc-800/60 cursor-text"
+          onClick={focusTerminal}
+        >
           <span className="text-emerald-400 font-mono text-sm select-none shrink-0">necromancer@haunt:~$</span>
           <input
             ref={inputRef}
@@ -305,16 +350,18 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
             value={inputVal}
             onChange={(e) => setInputVal(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Type 'help', 'seance alan', 'whoami', 'possessed'..."
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder="Type 'help', 'seance ada', 'whoami', 'possessed'..."
             disabled={isProcessing}
-            className="w-full bg-transparent text-emerald-200 outline-none font-mono text-sm placeholder:text-zinc-600 focus:ring-0"
+            className="w-full bg-transparent text-emerald-200 outline-none font-mono text-sm placeholder:text-zinc-600 focus:ring-0 cursor-text select-text"
             autoFocus
           />
         </div>
       </div>
 
       {/* Quick Action Grimoire Bar */}
-      <div className="px-4 py-3 bg-zinc-900/90 border-t border-zinc-800 text-xs flex flex-wrap items-center gap-2">
+      <div className="relative z-20 px-4 py-3 bg-zinc-900/90 border-t border-zinc-800 text-xs flex flex-wrap items-center gap-2 select-none">
         <span className="text-zinc-500 font-mono flex items-center gap-1">
           <HelpCircle className="w-3 h-3 text-zinc-400" /> Quick Spells:
         </span>
@@ -322,8 +369,11 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
         {DEPARTED_PIONEERS.slice(0, 4).map((pioneer) => (
           <button
             key={pioneer.id}
-            onClick={() => executeCommand(`seance ${pioneer.name.split(" ")[0].toLowerCase()}`)}
-            className="px-2.5 py-1 rounded-md bg-zinc-800/80 hover:bg-emerald-950/60 border border-zinc-700/60 hover:border-emerald-500/50 text-zinc-300 hover:text-emerald-300 font-mono transition-all text-xs flex items-center gap-1"
+            onClick={(e) => {
+              e.stopPropagation();
+              executeCommand(`seance ${pioneer.name.split(" ")[0].toLowerCase()}`);
+            }}
+            className="px-2.5 py-1 rounded-md bg-zinc-800/80 hover:bg-emerald-950/60 border border-zinc-700/60 hover:border-emerald-500/50 text-zinc-300 hover:text-emerald-300 font-mono transition-all text-xs flex items-center gap-1 cursor-pointer"
           >
             <Sparkles className="w-2.5 h-2.5 text-amber-400" />
             Séance: {pioneer.name.split(" ")[0]}
@@ -331,8 +381,11 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
         ))}
 
         <button
-          onClick={() => executeCommand("possessed")}
-          className="px-2.5 py-1 rounded-md bg-red-950/40 hover:bg-red-900/60 border border-red-700/50 text-red-300 font-mono transition-all text-xs flex items-center gap-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            executeCommand("possessed");
+          }}
+          className="px-2.5 py-1 rounded-md bg-red-950/40 hover:bg-red-900/60 border border-red-700/50 text-red-300 font-mono transition-all text-xs flex items-center gap-1 cursor-pointer"
         >
           <Zap className="w-2.5 h-2.5 text-red-400" />
           Possess Terminal
@@ -340,8 +393,11 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
 
         {onNavigateToOfrenda && (
           <button
-            onClick={onNavigateToOfrenda}
-            className="px-2.5 py-1 rounded-md bg-amber-950/40 hover:bg-amber-900/60 border border-amber-600/50 text-amber-300 font-mono transition-all text-xs flex items-center gap-1 ml-auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              onNavigateToOfrenda();
+            }}
+            className="px-2.5 py-1 rounded-md bg-amber-950/40 hover:bg-amber-900/60 border border-amber-600/50 text-amber-300 font-mono transition-all text-xs flex items-center gap-1 ml-auto cursor-pointer"
           >
             <Flame className="w-2.5 h-2.5 text-amber-400" />
             Altar de Recuerdos →
@@ -351,4 +407,3 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
     </div>
   );
 }
-
