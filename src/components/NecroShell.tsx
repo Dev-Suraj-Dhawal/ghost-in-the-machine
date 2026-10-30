@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Terminal, Skull, Sparkles, Volume2, VolumeX, Flame, Zap, HelpCircle } from "lucide-react";
+import { Terminal, Skull, Sparkles, Volume2, VolumeX, Flame, Zap, HelpCircle, Radio, ShieldCheck, BookOpen } from "lucide-react";
 import { parsePossessedCommand, summonSpiritWhisper, DEPARTED_PIONEERS } from "@/lib/aiEngine";
 import { TerminalHistoryItem, AIInferenceConfig } from "@/lib/types";
 import { sound } from "@/lib/soundEngine";
@@ -12,6 +12,10 @@ interface NecroShellProps {
   onNavigateToManifesto?: () => void;
   onOpenGuide?: () => void;
   aiConfig: AIInferenceConfig;
+  volume?: number;
+  isMuted?: boolean;
+  onVolumeChange?: (volume: number) => void;
+  onToggleMute?: () => void;
 }
 
 export default function NecroShell({
@@ -20,6 +24,10 @@ export default function NecroShell({
   onNavigateToManifesto,
   onOpenGuide,
   aiConfig,
+  volume: propVolume,
+  isMuted: propIsMuted,
+  onVolumeChange: propOnVolumeChange,
+  onToggleMute: propOnToggleMute,
 }: NecroShellProps) {
   const [history, setHistory] = useState<TerminalHistoryItem[]>([
     {
@@ -42,9 +50,25 @@ export default function NecroShell({
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isPossessedGlitch, setIsPossessedGlitch] = useState(false);
-  const [isMuted, setIsMuted] = useState(sound.getMuted());
-  const [presenceScore, setPresenceScore] = useState(67);
+  const [volume, setVolume] = useState<number>(propVolume !== undefined ? propVolume : sound.getVolume());
+  const [isMuted, setIsMuted] = useState<boolean>(propIsMuted !== undefined ? propIsMuted : sound.getMuted());
+  const [presenceScore, setPresenceScore] = useState(78);
   const [isFocused, setIsFocused] = useState(true);
+
+  // Subscribe to SoundEngine volume changes so system volume is 100% synchronized
+  useEffect(() => {
+    const unsub = sound.subscribeVolume((vol, muted) => {
+      setVolume(vol);
+      setIsMuted(muted);
+    });
+    return unsub;
+  }, []);
+
+  // Update when prop changes
+  useEffect(() => {
+    if (propVolume !== undefined) setVolume(propVolume);
+    if (propIsMuted !== undefined) setIsMuted(propIsMuted);
+  }, [propVolume, propIsMuted]);
 
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -71,14 +95,33 @@ export default function NecroShell({
   }, []);
 
   const handleToggleSound = () => {
-    const next = !isMuted;
-    setIsMuted(next);
-    sound.setMuted(next);
-    if (!next) {
-      sound.playCandleChime();
+    if (propOnToggleMute) {
+      propOnToggleMute();
+    } else {
+      const next = !isMuted;
+      setIsMuted(next);
+      sound.setMuted(next);
+      if (!next) {
+        sound.playCandleChime();
+      }
     }
     focusTerminal();
   };
+
+  const handleVolumeChange = (newVol: number) => {
+    if (propOnVolumeChange) {
+      propOnVolumeChange(newVol);
+    } else {
+      setVolume(newVol);
+      sound.setVolume(newVol);
+      if (isMuted && newVol > 0) {
+        setIsMuted(false);
+        sound.setMuted(false);
+      }
+    }
+  };
+
+  const soundPercent = isMuted ? 0 : Math.round(volume * 100);
 
   const executeCommand = async (rawCmd: string) => {
     const cmd = rawCmd.trim();
@@ -290,24 +333,51 @@ export default function NecroShell({
         </div>
 
         {/* Telemetry & Controls */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-xs font-mono text-zinc-400">
-            <Skull className="w-3.5 h-3.5 text-purple-400" />
-            <span className="hidden sm:inline">Spectral Sync:</span>
-            <span className="text-emerald-400 font-bold">{presenceScore}%</span>
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* 1. Dynamic Master Sound Percentage & Slider */}
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-zinc-700/70 bg-zinc-800/60 text-xs font-mono shadow-inner">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggleSound();
+              }}
+              aria-label="Toggle Audio Mute"
+              className="p-0.5 rounded text-zinc-300 hover:text-white transition-colors cursor-pointer"
+              title={isMuted ? "Unmute Procedural Audio (M)" : `Sound Level: ${soundPercent}% (Click to Mute)`}
+            >
+              {isMuted || soundPercent === 0 ? (
+                <VolumeX className="w-3.5 h-3.5 text-zinc-500" />
+              ) : (
+                <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+              )}
+            </button>
+            <span className="text-[11px] font-bold text-amber-400 font-mono select-none min-w-[28px] text-right">
+              {isMuted ? "MUTED" : `${soundPercent}%`}
+            </span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={isMuted ? 0 : volume}
+              onChange={(e) => {
+                e.stopPropagation();
+                const val = parseFloat(e.target.value);
+                handleVolumeChange(val);
+              }}
+              onClick={(e) => e.stopPropagation()}
+              aria-label="Terminal Audio Volume"
+              className="w-14 h-1 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-amber-500 hidden md:block"
+              title={`Master Sound Level: ${isMuted ? "MUTED" : `${soundPercent}%`}`}
+            />
           </div>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleToggleSound();
-            }}
-            aria-label="Toggle Sound"
-            className="p-1.5 rounded-lg border border-zinc-700/60 hover:bg-zinc-800 text-zinc-300 transition-colors cursor-pointer"
-            title={isMuted ? "Unmute Procedural Audio" : "Mute Procedural Audio"}
-          >
-            {isMuted ? <VolumeX className="w-3.5 h-3.5 text-zinc-500" /> : <Volume2 className="w-3.5 h-3.5 text-amber-400" />}
-          </button>
+          {/* 2. Spectral Presence Sync Indicator */}
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-purple-900/40 bg-purple-950/20 text-xs font-mono">
+            <Skull className="w-3.5 h-3.5 text-purple-400" />
+            <span className="hidden sm:inline text-zinc-400">Spectral Sync:</span>
+            <span className="text-emerald-400 font-bold">{presenceScore}%</span>
+          </div>
         </div>
       </div>
 
@@ -386,49 +456,98 @@ export default function NecroShell({
         </div>
       </div>
 
-      {/* Quick Action Grimoire Bar */}
-      <div className="relative z-20 px-4 py-3 bg-zinc-900/90 border-t border-zinc-800 text-xs flex flex-wrap items-center gap-2 select-none">
-        <span className="text-zinc-500 font-mono flex items-center gap-1">
-          <HelpCircle className="w-3 h-3 text-zinc-400" /> Quick Spells:
-        </span>
+      {/* Quick Action Grimoire Bar - Organized Component Dock */}
+      <div className="relative z-20 px-3 sm:px-4 py-2 bg-zinc-900/90 border-t border-zinc-800 text-xs flex flex-wrap items-center justify-between gap-2 select-none">
+        {/* Left: Quick Séances & Rituals */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-zinc-500 font-mono text-[11px] flex items-center gap-1 mr-0.5">
+            <Sparkles className="w-3 h-3 text-amber-400" /> Séances:
+          </span>
 
-        {DEPARTED_PIONEERS.slice(0, 4).map((pioneer) => (
-          <button
-            key={pioneer.id}
-            onClick={(e) => {
-              e.stopPropagation();
-              executeCommand(`seance ${pioneer.name.split(" ")[0].toLowerCase()}`);
-            }}
-            className="px-2.5 py-1 rounded-md bg-zinc-800/80 hover:bg-emerald-950/60 border border-zinc-700/60 hover:border-emerald-500/50 text-zinc-300 hover:text-emerald-300 font-mono transition-all text-xs flex items-center gap-1 cursor-pointer"
-          >
-            <Sparkles className="w-2.5 h-2.5 text-amber-400" />
-            Séance: {pioneer.name.split(" ")[0]}
-          </button>
-        ))}
+          {DEPARTED_PIONEERS.slice(0, 4).map((pioneer) => (
+            <button
+              key={pioneer.id}
+              onClick={(e) => {
+                e.stopPropagation();
+                executeCommand(`seance ${pioneer.name.split(" ")[0].toLowerCase()}`);
+              }}
+              className="px-2 py-0.5 rounded-md bg-zinc-800/80 hover:bg-emerald-950/60 border border-zinc-700/60 hover:border-emerald-500/50 text-zinc-300 hover:text-emerald-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+            >
+              <span>{pioneer.name.split(" ")[0]}</span>
+            </button>
+          ))}
 
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            executeCommand("possessed");
-          }}
-          className="px-2.5 py-1 rounded-md bg-red-950/40 hover:bg-red-900/60 border border-red-700/50 text-red-300 font-mono transition-all text-xs flex items-center gap-1 cursor-pointer"
-        >
-          <Zap className="w-2.5 h-2.5 text-red-400" />
-          Possess Terminal
-        </button>
-
-        {onNavigateToOfrenda && (
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onNavigateToOfrenda();
+              executeCommand("possessed");
             }}
-            className="px-2.5 py-1 rounded-md bg-amber-950/40 hover:bg-amber-900/60 border border-amber-600/50 text-amber-300 font-mono transition-all text-xs flex items-center gap-1 ml-auto cursor-pointer"
+            className="px-2 py-0.5 rounded-md bg-red-950/40 hover:bg-red-900/60 border border-red-700/50 text-red-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+            title="Trigger full CRT glitch effect"
           >
-            <Flame className="w-2.5 h-2.5 text-amber-400" />
-            Altar de Recuerdos →
+            <Zap className="w-2.5 h-2.5 text-red-400" />
+            <span>Possess</span>
           </button>
-        )}
+        </div>
+
+        {/* Right: Key Feature Destination Shortcuts */}
+        <div className="flex flex-wrap items-center gap-1.5 ml-auto">
+          {onNavigateToOfrenda && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigateToOfrenda();
+              }}
+              className="px-2 py-0.5 rounded-md bg-amber-950/40 hover:bg-amber-900/60 border border-amber-600/50 text-amber-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+              title="Open Living Ofrenda Altar (Key: 2)"
+            >
+              <Flame className="w-3 h-3 text-amber-400" />
+              <span>Altar</span>
+            </button>
+          )}
+
+          {onNavigateToInvestigator && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigateToInvestigator();
+              }}
+              className="px-2 py-0.5 rounded-md bg-red-950/40 hover:bg-red-900/60 border border-red-600/50 text-red-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+              title="Open Telemetry Radar (Key: 3)"
+            >
+              <Radio className="w-3 h-3 text-red-400" />
+              <span>Telemetry</span>
+            </button>
+          )}
+
+          {onNavigateToManifesto && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigateToManifesto();
+              }}
+              className="px-2 py-0.5 rounded-md bg-purple-950/40 hover:bg-purple-900/60 border border-purple-600/50 text-purple-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+              title="Open Why Open Manifesto (Key: 4)"
+            >
+              <ShieldCheck className="w-3 h-3 text-purple-400" />
+              <span>Manifesto</span>
+            </button>
+          )}
+
+          {onOpenGuide && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenGuide();
+              }}
+              className="px-2 py-0.5 rounded-md bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+              title="Open Royal Farman Scroll Manual (Key: H)"
+            >
+              <BookOpen className="w-3 h-3 text-amber-400" />
+              <span>Manual</span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
