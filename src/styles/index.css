@@ -155,3 +155,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
+
+/* Custom Ghost Cursor Active State */
+@media (pointer: fine) {
+  body.custom-ghost-cursor-active,
+  body.custom-ghost-cursor-active * {
+    cursor: none !important;
+  }
+}
+
