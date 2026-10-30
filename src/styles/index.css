@@ -164,3 +164,37 @@ body {
   }
 }
 
+/* Ghost Vibing Fonts & Ethereal Typography */
+.font-ghost {
+  font-family: var(--font-ghost), 'Creepster', cursive;
+  letter-spacing: 0.05em;
+}
+
+.font-regal {
+  font-family: var(--font-regal), 'Cinzel Decorative', Georgia, serif;
+}
+
+.font-scroll {
+  font-family: var(--font-scroll), 'MedievalSharp', 'Cinzel', Georgia, serif;
+}
+
+.text-ghost-glow {
+  text-shadow: 0 0 8px var(--accent-primary), 0 0 18px var(--accent-glow), 0 0 32px var(--accent-glow);
+}
+
+@keyframes ghostFloatTitle {
+  0%, 100% {
+    transform: translateY(0px);
+    filter: drop-shadow(0 0 8px var(--accent-glow));
+  }
+  50% {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 0 16px var(--accent-primary));
+  }
+}
+
+.ghost-vibing-header {
+  animation: ghostFloatTitle 4s ease-in-out infinite;
+}
+
+
