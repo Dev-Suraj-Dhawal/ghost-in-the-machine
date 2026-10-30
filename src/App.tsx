@@ -172,165 +172,142 @@ export default function App() {
       <GhostCursor theme={theme} enabled={ghostCursorEnabled} />
 
       {/* Top Navbar */}
-      <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md px-3 sm:px-6 lg:px-8 py-2.5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-          {/* Logo & Spooky Ghost Vibing Title */}
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/85 backdrop-blur-xl px-3 sm:px-5 lg:px-6">
+        <div className="max-w-7xl mx-auto h-14 flex items-center justify-between gap-2 sm:gap-4">
+          {/* Left Brand: Minimalist Ghost Avatar & Spectral Title */}
+          <div className="flex items-center gap-2.5 shrink-0">
             <button
               onClick={() => setShowGuideModal(true)}
-              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-500/20 via-orange-600/30 to-purple-600/20 border border-amber-500/40 flex items-center justify-center text-lg sm:text-xl shadow-lg shadow-amber-500/10 hover:scale-105 transition-transform cursor-pointer shrink-0"
+              className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500/20 via-orange-500/25 to-purple-600/20 border border-amber-500/40 flex items-center justify-center text-base shadow-sm shadow-amber-500/10 hover:scale-105 active:scale-95 transition-transform cursor-pointer shrink-0"
               title="Open Royal Apprentice Manual (H)"
               aria-label="Open Royal Apprentice Manual"
             >
               👻
               {audioActivity > 0 && (
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               )}
             </button>
-            <div>
-              <div className="flex items-center gap-2">
-                {/* Spooky Ghost Vibing Title */}
-                <span className="font-ghost text-xl sm:text-2xl tracking-wider text-white text-ghost-glow ghost-vibing-header leading-tight">
-                  GHOST IN THE MACHINE
-                </span>
-                <span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30 font-semibold hidden md:inline-block">
-                  Open-Source AI
-                </span>
-              </div>
-              <div className="text-[10px] sm:text-[11px] text-zinc-400 font-mono hidden sm:block">
-                Possessed Shell • Living Ofrenda • 100% Client-Side Privacy
-              </div>
+            <div className="flex items-center gap-2">
+              <span className="font-ghost text-lg sm:text-xl tracking-wider text-white text-ghost-glow ghost-vibing-header leading-none select-none">
+                GHOST IN THE MACHINE
+              </span>
+              <span className="hidden xl:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                client-side
+              </span>
             </div>
           </div>
 
-          {/* Navigation Mode Tabs (Desktop: visible on lg+) */}
-          <nav className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-zinc-900/90 border border-zinc-800 text-xs font-medium">
+          {/* Center Navigation Dock: Unified Segmented Pill (Visible on md+) */}
+          <nav className="hidden md:flex items-center gap-0.5 p-1 rounded-full bg-zinc-900/80 border border-zinc-800/90 text-xs font-medium backdrop-blur-md shadow-inner">
             <button
               onClick={() => handleTabChange("terminal")}
               aria-label="Switch to NecroShell Terminal"
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`h-7 px-3 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === "terminal"
-                  ? "bg-emerald-950 text-emerald-300 border border-emerald-500/60 font-mono shadow-sm"
-                  : "text-zinc-400 hover:text-white"
+                  ? "bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 shadow-sm font-mono"
+                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
               }`}
             >
               <Terminal className="w-3.5 h-3.5" />
               <span>NecroShell</span>
-              <kbd className="text-[9px] px-1 py-0.2 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">1</kbd>
+              <kbd className="text-[9px] px-1 py-0.1 rounded bg-zinc-800 text-zinc-400 border border-zinc-700 font-mono">1</kbd>
             </button>
 
             <button
               onClick={() => handleTabChange("ofrenda")}
               aria-label="Switch to Living Ofrenda"
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`h-7 px-3 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === "ofrenda"
-                  ? "bg-amber-950 text-amber-300 border border-amber-500/60 font-semibold shadow-sm"
-                  : "text-zinc-400 hover:text-white"
+                  ? "bg-amber-950/80 text-amber-300 border border-amber-500/50 shadow-sm font-semibold"
+                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
               }`}
             >
               <Flame className="w-3.5 h-3.5 candle-flame fill-amber-400" />
               <span>Living Ofrenda</span>
-              <kbd className="text-[9px] px-1 py-0.2 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">2</kbd>
+              <kbd className="text-[9px] px-1 py-0.1 rounded bg-zinc-800 text-zinc-400 border border-zinc-700 font-mono">2</kbd>
             </button>
 
             <button
               onClick={() => handleTabChange("investigator")}
               aria-label="Switch to Telemetry Logs"
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`h-7 px-3 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === "investigator"
-                  ? "bg-red-950 text-red-300 border border-red-500/60 font-medium shadow-sm"
-                  : "text-zinc-400 hover:text-white"
+                  ? "bg-red-950/80 text-red-300 border border-red-500/50 shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
               }`}
             >
               <Radio className="w-3.5 h-3.5" />
-              <span>Telemetry Logs</span>
-              <kbd className="text-[9px] px-1 py-0.2 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">3</kbd>
+              <span>Telemetry</span>
+              <kbd className="text-[9px] px-1 py-0.1 rounded bg-zinc-800 text-zinc-400 border border-zinc-700 font-mono">3</kbd>
             </button>
 
             <button
               onClick={() => handleTabChange("manifesto")}
               aria-label="Switch to Why Open Manifesto"
-              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+              className={`h-7 px-3 rounded-full transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeTab === "manifesto"
-                  ? "bg-purple-950 text-purple-300 border border-purple-500/60 font-medium shadow-sm"
-                  : "text-zinc-400 hover:text-white"
+                  ? "bg-purple-950/80 text-purple-300 border border-purple-500/50 shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
               }`}
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Why Open</span>
-              <kbd className="text-[9px] px-1 py-0.2 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">4</kbd>
+              <kbd className="text-[9px] px-1 py-0.1 rounded bg-zinc-800 text-zinc-400 border border-zinc-700 font-mono">4</kbd>
             </button>
           </nav>
 
-          {/* Right Tools (Desktop: visible on lg+) */}
-          <div className="hidden lg:flex items-center gap-2">
-            {/* Beginner's Manual Trigger */}
+          {/* Right Controls: Desktop Capsules (Visible on md+) */}
+          <div className="hidden md:flex items-center gap-2">
+            {/* 1. Royal Scroll Manual Pill */}
             <button
               onClick={() => setShowGuideModal(true)}
-              className="px-2.5 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm shadow-amber-500/10 cursor-pointer"
-              title="Royal Farman Manual (H)"
+              className="h-8 px-3 rounded-full border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 active:scale-95 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm shadow-amber-500/10 cursor-pointer shrink-0"
+              title="Open Royal Farman Scroll Manual (H)"
               aria-label="Open Beginner Guide Manual"
             >
               <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-[11px]">Manual</span>
+              <span>Manual</span>
+              <kbd className="text-[9px] px-1 rounded bg-amber-500/20 text-amber-300 font-mono">H</kbd>
             </button>
 
-            {/* Ghost Cursor Toggle Button */}
-            <button
-              onClick={handleToggleGhostCursor}
-              className={`px-2.5 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer ${
-                ghostCursorEnabled
-                  ? "border-amber-500/70 bg-amber-500/20 text-amber-300 shadow-sm shadow-amber-500/20"
-                  : "border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200"
-              }`}
-              title={ghostCursorEnabled ? "Turn off Ghost Cursor (C)" : "Turn on Ghost Cursor (C)"}
-              aria-label="Toggle Ghost Cursor"
-            >
-              <span className="text-xs">👻</span>
-              <span className="text-[11px]">Cursor</span>
-            </button>
-
-            {/* Ambient Sound Drone Toggle */}
-            <button
-              onClick={handleToggleDrone}
-              title={isDroneOn ? "Turn off Séance Ambient Drone (D)" : "Turn on Séance Ambient Drone (D)"}
-              className={`px-2.5 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer ${
-                isDroneOn
-                  ? "border-amber-500/70 bg-amber-500/20 text-amber-300 shadow-sm shadow-amber-500/20"
-                  : "border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200"
-              }`}
-              aria-label="Toggle Séance Ambient Drone"
-            >
-              <Waves className={`w-3.5 h-3.5 ${isDroneOn ? "animate-pulse" : ""}`} />
-              <span className="text-[11px]">Drone</span>
-            </button>
-
-            {/* Audio Mute/Unmute & Equalizer Visualizer */}
-            <div className="flex items-center gap-1.5 bg-zinc-900/60 border border-zinc-800 p-1 rounded-lg">
+            {/* 2. Audio & Drone Capsule */}
+            <div className="h-8 px-2.5 rounded-full bg-zinc-900/80 border border-zinc-800 flex items-center gap-2 shadow-sm">
               <button
                 onClick={handleToggleSound}
-                className="p-1 rounded text-zinc-300 hover:text-white transition-colors cursor-pointer"
+                className="p-1 rounded-full text-zinc-400 hover:text-white transition-colors cursor-pointer"
                 title={isMuted ? "Unmute Audio (M)" : "Mute Audio (M)"}
                 aria-label="Toggle Audio Mute"
               >
                 {isMuted ? (
-                  <VolumeX className="w-4 h-4 text-zinc-500" />
+                  <VolumeX className="w-3.5 h-3.5 text-zinc-500" />
                 ) : (
-                  <Volume2 className="w-4 h-4 text-amber-400" />
+                  <Volume2 className="w-3.5 h-3.5 text-amber-400" />
                 )}
               </button>
 
               {/* Real-time mini audio visualizer bars */}
               {!isMuted && (
-                <div className="flex items-end gap-0.5 h-4 w-4 px-0.5" title="Procedural Audio Synthesizer">
+                <div className="flex items-end gap-0.5 h-3 w-3 px-0.5" title="Procedural Audio Synthesizer">
                   <span className={`w-0.5 bg-amber-400 rounded-full ${audioActivity > 0 ? "audio-bar-1" : "h-1"}`} />
                   <span className={`w-0.5 bg-amber-300 rounded-full ${audioActivity > 0 ? "audio-bar-2" : "h-2"}`} />
                   <span className={`w-0.5 bg-amber-400 rounded-full ${audioActivity > 0 ? "audio-bar-3" : "h-1.5"}`} />
-                  <span className={`w-0.5 bg-orange-400 rounded-full ${audioActivity > 0 ? "audio-bar-4" : "h-1"}`} />
                 </div>
               )}
 
-              {/* Mini volume slider */}
+              {/* Drone button embedded in audio capsule */}
+              <button
+                onClick={handleToggleDrone}
+                title={isDroneOn ? "Ambient Drone: ON (D)" : "Ambient Drone: OFF (D)"}
+                className={`p-1 rounded-full transition-colors cursor-pointer ${
+                  isDroneOn ? "text-amber-300 bg-amber-500/20" : "text-zinc-500 hover:text-zinc-300"
+                }`}
+                aria-label="Toggle Séance Ambient Drone"
+              >
+                <Waves className={`w-3 h-3 ${isDroneOn ? "animate-pulse" : ""}`} />
+              </button>
+
+              {/* Compact Volume slider on xl screens */}
               <input
                 type="range"
                 min="0"
@@ -339,100 +316,117 @@ export default function App() {
                 value={isMuted ? 0 : volume}
                 onChange={handleVolumeChange}
                 aria-label="Master audio volume"
-                className="w-14 h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                className="hidden xl:block w-12 h-1 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
                 title={`Volume: ${Math.round(volume * 100)}%`}
               />
             </div>
 
-            {/* Theme Switcher Button */}
-            <button
-              onClick={cycleTheme}
-              className="px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-300 flex items-center gap-1.5 text-xs transition-colors cursor-pointer"
-              title={`Active Theme: ${theme.toUpperCase()} (Click to cycle)`}
-              aria-label="Cycle Theme Palette"
-            >
-              <Palette className="w-3.5 h-3.5 text-amber-400" />
-              <span className="capitalize font-mono text-[11px]">{theme}</span>
-            </button>
-
-            {/* Keyboard Shortcuts Trigger */}
-            <button
-              onClick={() => setShowShortcutsModal(true)}
-              className="p-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs transition-colors cursor-pointer"
-              title="Keyboard Shortcuts (?)"
-              aria-label="View Keyboard Shortcuts"
-            >
-              <Keyboard className="w-3.5 h-3.5" />
-            </button>
-
-            {/* GitHub Repo Link */}
-            <a
-              href="https://github.com/Dev-Suraj-Dhawal/ghost-in-the-machine"
-              target="_blank"
-              rel="noreferrer"
-              className="px-2.5 py-1.5 rounded-lg border border-zinc-700/80 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors"
-              aria-label="GitHub Repository"
-            >
-              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            {/* 3. Settings & Theme Capsule */}
+            <div className="h-8 p-0.5 rounded-full bg-zinc-900/80 border border-zinc-800 flex items-center gap-0.5 shadow-sm">
+              {/* Theme Cycle Dot Button */}
+              <button
+                onClick={cycleTheme}
+                className="h-7 px-2 rounded-full hover:bg-zinc-800 text-zinc-300 flex items-center gap-1.5 text-xs transition-colors cursor-pointer"
+                title={`Theme: ${theme.toUpperCase()} (Click to cycle)`}
+                aria-label="Cycle Theme Palette"
+              >
+                <span
+                  className={`w-2 h-2 rounded-full ${
+                    theme === "cempasuchil"
+                      ? "bg-amber-400 shadow-sm shadow-amber-400/50"
+                      : theme === "spectral"
+                      ? "bg-emerald-400 shadow-sm shadow-emerald-400/50"
+                      : "bg-rose-500 shadow-sm shadow-rose-500/50"
+                  }`}
                 />
-              </svg>
-              <span>Repo</span>
-            </a>
+                <span className="capitalize font-mono text-[11px] hidden lg:inline">{theme}</span>
+              </button>
+
+              {/* Ghost Cursor Toggle */}
+              <button
+                onClick={handleToggleGhostCursor}
+                className={`w-7 h-7 rounded-full flex items-center justify-center transition-colors cursor-pointer ${
+                  ghostCursorEnabled
+                    ? "bg-amber-500/20 text-amber-300"
+                    : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800"
+                }`}
+                title={ghostCursorEnabled ? "Ghost Cursor: Active (C)" : "Ghost Cursor: Disabled (C)"}
+                aria-label="Toggle Ghost Cursor"
+              >
+                <span className="text-[11px]">👻</span>
+              </button>
+
+              {/* Keyboard Shortcuts Modal */}
+              <button
+                onClick={() => setShowShortcutsModal(true)}
+                className="w-7 h-7 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+                title="Keyboard Shortcuts (?)"
+                aria-label="View Keyboard Shortcuts"
+              >
+                <Keyboard className="w-3.5 h-3.5" />
+              </button>
+
+              {/* GitHub Link */}
+              <a
+                href="https://github.com/Dev-Suraj-Dhawal/ghost-in-the-machine"
+                target="_blank"
+                rel="noreferrer"
+                className="h-7 px-2.5 rounded-full flex items-center gap-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 text-xs font-mono transition-colors"
+                aria-label="GitHub Repository"
+                title="GitHub Repository"
+              >
+                <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                  />
+                </svg>
+                <span className="hidden xl:inline">Repo</span>
+              </a>
+            </div>
           </div>
 
-          {/* Right Tools (Mobile: visible below lg) */}
-          <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
-            {/* Mobile Manual Button */}
+          {/* Right Mobile Controls (< md) */}
+          <div className="flex md:hidden items-center gap-1.5">
+            {/* Mobile Manual Pill */}
             <button
               onClick={() => setShowGuideModal(true)}
-              className="px-2.5 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs font-semibold flex items-center gap-1 cursor-pointer"
-              title="Royal Farman Manual (H)"
+              className="h-8 px-2.5 rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs font-semibold flex items-center gap-1 cursor-pointer"
+              title="Open Royal Farman Scroll Manual"
             >
               <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-[11px] hidden sm:inline">Manual</span>
+              <span className="text-[11px]">Manual</span>
             </button>
 
-            {/* Mobile Theme Cycle */}
-            <button
-              onClick={cycleTheme}
-              className="p-1.5 rounded-lg border border-zinc-800 bg-zinc-900/80 text-amber-400 text-xs cursor-pointer"
-              title={`Cycle theme (current: ${theme})`}
-            >
-              <Palette className="w-4 h-4" />
-            </button>
-
-            {/* Mobile Sound Mute Toggle */}
+            {/* Mobile Audio Toggle */}
             <button
               onClick={handleToggleSound}
-              className="p-1.5 rounded-lg border border-zinc-800 bg-zinc-900/80 text-zinc-300 text-xs cursor-pointer"
+              className="w-8 h-8 rounded-full border border-zinc-800 bg-zinc-900/80 text-zinc-300 flex items-center justify-center cursor-pointer"
               title={isMuted ? "Unmute" : "Mute"}
             >
-              {isMuted ? <VolumeX className="w-4 h-4 text-zinc-500" /> : <Volume2 className="w-4 h-4 text-amber-400" />}
+              {isMuted ? <VolumeX className="w-3.5 h-3.5 text-zinc-500" /> : <Volume2 className="w-3.5 h-3.5 text-amber-400" />}
             </button>
 
-            {/* Mobile Hamburger Menu Toggle */}
+            {/* Mobile Hamburger Drawer Toggle */}
             <button
               onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
+              className={`w-8 h-8 rounded-full border transition-colors flex items-center justify-center cursor-pointer ${
                 mobileMenuOpen
                   ? "border-amber-500/70 bg-amber-500/20 text-amber-300"
                   : "border-zinc-800 bg-zinc-900/80 text-zinc-300"
               }`}
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Dropdown Menu Drawer */}
+        {/* Mobile Slide-down Drawer (< md) */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-3 pt-3 border-t border-zinc-800/80 space-y-3 animate-in slide-in-from-top-2 duration-200">
-            {/* 4 Main Tabs */}
+          <div className="md:hidden py-3 border-t border-zinc-800/80 space-y-3 animate-in slide-in-from-top-2 duration-200">
+            {/* 4 Main Mode Cards */}
             <div className="grid grid-cols-2 gap-2">
               <button
                 onClick={() => {
@@ -476,7 +470,7 @@ export default function App() {
                 }`}
               >
                 <Radio className="w-4 h-4 text-red-400" />
-                <span>Telemetry Logs</span>
+                <span>Telemetry</span>
               </button>
 
               <button
@@ -498,6 +492,14 @@ export default function App() {
             {/* Mobile Settings Row */}
             <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-zinc-800/60 text-xs">
               <button
+                onClick={cycleTheme}
+                className="px-3 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-zinc-300 flex items-center gap-1.5 cursor-pointer"
+              >
+                <Palette className="w-3.5 h-3.5 text-amber-400" />
+                <span className="capitalize font-mono">Theme: {theme}</span>
+              </button>
+
+              <button
                 onClick={handleToggleGhostCursor}
                 className={`px-3 py-1.5 rounded-lg border flex items-center gap-1.5 font-mono cursor-pointer ${
                   ghostCursorEnabled
@@ -506,7 +508,7 @@ export default function App() {
                 }`}
               >
                 <span>👻</span>
-                <span>Ghost Cursor: {ghostCursorEnabled ? "ON" : "OFF"}</span>
+                <span>Cursor: {ghostCursorEnabled ? "ON" : "OFF"}</span>
               </button>
 
               <button
@@ -518,7 +520,7 @@ export default function App() {
                 }`}
               >
                 <Waves className={`w-3.5 h-3.5 ${isDroneOn ? "animate-pulse" : ""}`} />
-                <span>Ambient Drone: {isDroneOn ? "ON" : "OFF"}</span>
+                <span>Drone: {isDroneOn ? "ON" : "OFF"}</span>
               </button>
 
               <button
