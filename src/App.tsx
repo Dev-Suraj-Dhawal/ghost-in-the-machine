@@ -282,6 +282,10 @@ export default function App() {
                 )}
               </button>
 
+              <span className="text-[10px] font-mono font-bold text-amber-400 select-none min-w-[24px] text-center">
+                {isMuted ? "0%" : `${Math.round(volume * 100)}%`}
+              </span>
+
               {/* Real-time mini audio visualizer bars */}
               {!isMuted && (
                 <div className="flex items-end gap-0.5 h-3 w-3 px-0.5" title="Procedural Audio Synthesizer">
@@ -553,6 +557,13 @@ export default function App() {
             onNavigateToManifesto={() => handleTabChange("manifesto")}
             onOpenGuide={() => setShowGuideModal(true)}
             aiConfig={aiConfig}
+            volume={volume}
+            isMuted={isMuted}
+            onVolumeChange={(val) => {
+              setVolume(val);
+              sound.setVolume(val);
+            }}
+            onToggleMute={handleToggleSound}
           />
         )}
 

@@ -2,6 +2,7 @@
 // Completely self-contained - zero audio file dependencies, zero network requests
 
 export type AudioActivityListener = (level: number) => void;
+export type VolumeChangeListener = (volume: number, isMuted: boolean) => void;
 
 class SoundEngine {
   private ctx: AudioContext | null = null;
@@ -16,8 +17,9 @@ class SoundEngine {
   private droneLfo: OscillatorNode | null = null;
   private droneGain: GainNode | null = null;
 
-  // Activity listeners for UI visualizers
+  // Activity & volume listeners for UI visualizers
   private listeners: Set<AudioActivityListener> = new Set();
+  private volumeListeners: Set<VolumeChangeListener> = new Set();
   private activityTimeout: number | null = null;
 
   private initContext() {
@@ -53,6 +55,16 @@ class SoundEngine {
     return () => this.listeners.delete(listener);
   }
 
+  private notifyVolume() {
+    this.volumeListeners.forEach((fn) => fn(this.volume, this.isMuted));
+  }
+
+  public subscribeVolume(listener: VolumeChangeListener): () => void {
+    this.volumeListeners.add(listener);
+    listener(this.volume, this.isMuted);
+    return () => this.volumeListeners.delete(listener);
+  }
+
   public setMuted(muted: boolean) {
     this.isMuted = muted;
     this.initContext();
@@ -62,6 +74,7 @@ class SoundEngine {
     if (muted && this.isAmbientDroneOn) {
       this.stopAmbientDrone();
     }
+    this.notifyVolume();
   }
 
   public getMuted(): boolean {
@@ -75,6 +88,7 @@ class SoundEngine {
     if (this.masterGain && this.ctx && !this.isMuted) {
       this.masterGain.gain.setValueAtTime(clamped, this.ctx.currentTime);
     }
+    this.notifyVolume();
   }
 
   public getVolume(): number {
