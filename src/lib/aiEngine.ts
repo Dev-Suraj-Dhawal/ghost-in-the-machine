@@ -237,6 +237,8 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           `  possessed            - Trigger an immediate spectral glitch sequence\n` +
           `  ofrenda              - Summon the Día de los Muertos Altar de Recuerdos\n` +
           `  investigate          - Analyze paranormal IoT sensor anomalies\n` +
+          `  manifesto            - Open the Why Open-Source AI Architectural Dossier\n` +
+          `  manual               - Unroll the English Royal Farman Scroll Guide\n` +
           `  clear                - Purge terminal buffer`,
       };
 

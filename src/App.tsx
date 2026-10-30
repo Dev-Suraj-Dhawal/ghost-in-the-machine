@@ -191,10 +191,6 @@ export default function App() {
               <span className="font-ghost text-lg sm:text-xl tracking-wider text-white text-ghost-glow ghost-vibing-header leading-none select-none">
                 GHOST IN THE MACHINE
               </span>
-              <span className="hidden xl:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                client-side
-              </span>
             </div>
           </div>
 
@@ -554,6 +550,8 @@ export default function App() {
           <NecroShell
             onNavigateToOfrenda={() => handleTabChange("ofrenda")}
             onNavigateToInvestigator={() => handleTabChange("investigator")}
+            onNavigateToManifesto={() => handleTabChange("manifesto")}
+            onOpenGuide={() => setShowGuideModal(true)}
             aiConfig={aiConfig}
           />
         )}
