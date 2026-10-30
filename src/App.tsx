@@ -12,11 +12,16 @@ import {
   Keyboard,
   X,
   ExternalLink,
+  BookOpen,
+  MousePointer,
 } from "lucide-react";
 import NecroShell from "@/components/NecroShell";
 import LivingOfrenda from "@/components/LivingOfrenda";
 import PhantomInvestigator from "@/components/PhantomInvestigator";
 import OpenInnovationComparison from "@/components/OpenInnovationComparison";
+import GhostCursor from "@/components/GhostCursor";
+import GhostMascot from "@/components/GhostMascot";
+import BeginnerGuideModal from "@/components/BeginnerGuideModal";
 import { DEFAULT_AI_CONFIG } from "@/lib/aiEngine";
 import { AIInferenceConfig } from "@/lib/types";
 import { sound } from "@/lib/soundEngine";
@@ -31,6 +36,15 @@ export default function App() {
   const [isDroneOn, setIsDroneOn] = useState<boolean>(sound.isDroneActive());
   const [audioActivity, setAudioActivity] = useState<number>(0);
   const [showShortcutsModal, setShowShortcutsModal] = useState<boolean>(false);
+  const [showGuideModal, setShowGuideModal] = useState<boolean>(false);
+  const [ghostCursorEnabled, setGhostCursorEnabled] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("ghost_cursor_enabled");
+      return saved !== "false";
+    }
+    return true;
+  });
+
   const [theme, setTheme] = useState<AppTheme>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("ghost_theme");
@@ -74,14 +88,21 @@ export default function App() {
         handleToggleSound();
       } else if (e.key === "d" || e.key === "D") {
         handleToggleDrone();
+      } else if (e.key === "c" || e.key === "C") {
+        handleToggleGhostCursor();
+      } else if (e.key === "h" || e.key === "H") {
+        setShowGuideModal((prev) => !prev);
       } else if (e.key === "?") {
         setShowShortcutsModal((prev) => !prev);
+      } else if (e.key === "Escape") {
+        setShowShortcutsModal(false);
+        setShowGuideModal(false);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isMuted, isDroneOn]);
+  }, [isMuted, isDroneOn, ghostCursorEnabled]);
 
   const handleTabChange = (tab: "terminal" | "ofrenda" | "investigator" | "manifesto") => {
     setActiveTab(tab);
@@ -120,6 +141,17 @@ export default function App() {
     setIsDroneOn(active);
   };
 
+  const handleToggleGhostCursor = () => {
+    const next = !ghostCursorEnabled;
+    setGhostCursorEnabled(next);
+    localStorage.setItem("ghost_cursor_enabled", String(next));
+    try {
+      sound.playKeyClick();
+    } catch {
+      // ignore
+    }
+  };
+
   const cycleTheme = () => {
     const nextTheme: Record<AppTheme, AppTheme> = {
       cempasuchil: "spectral",
@@ -133,20 +165,28 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
+      {/* 1. Next-Level Custom Ghost Cursor with Ectoplasm Physics */}
+      <GhostCursor theme={theme} enabled={ghostCursorEnabled} />
+
       {/* Top Navbar */}
       <header className="sticky top-0 z-40 border-b border-zinc-800/80 bg-zinc-950/85 backdrop-blur-md px-3 sm:px-8 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
           {/* Logo & Title */}
           <div className="flex items-center gap-3">
-            <div className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 via-orange-600/30 to-purple-600/20 border border-amber-500/40 flex items-center justify-center text-lg shadow-lg shadow-amber-500/10">
+            <button
+              onClick={() => setShowGuideModal(true)}
+              className="relative w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 via-orange-600/30 to-purple-600/20 border border-amber-500/40 flex items-center justify-center text-lg shadow-lg shadow-amber-500/10 hover:scale-105 transition-transform cursor-pointer"
+              title="Click to Open Beginner Manual"
+              aria-label="Click to Open Beginner Manual"
+            >
               👻
               {audioActivity > 0 && (
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
               )}
-            </div>
+            </button>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold tracking-tight text-white text-sm sm:text-base">
+                <span className="font-extrabold tracking-tight text-white text-sm sm:base">
                   GHOST IN THE MACHINE
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30 font-semibold hidden sm:inline-block">
@@ -218,17 +258,44 @@ export default function App() {
             </button>
           </nav>
 
-          {/* Right Tools: Ambient Audio, Volume, Theme, Shortcuts & GitHub */}
-          <div className="flex items-center gap-2 order-2 sm:order-3 ml-auto sm:ml-0">
+          {/* Right Tools: Manual, Ghost Cursor, Ambient Audio, Volume, Theme & GitHub */}
+          <div className="flex items-center gap-1.5 sm:gap-2 order-2 sm:order-3 ml-auto sm:ml-0">
+            {/* Beginner's Manual Trigger */}
+            <button
+              onClick={() => setShowGuideModal(true)}
+              className="px-2 sm:px-2.5 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm shadow-amber-500/10"
+              title="Beginner Guide & Manual (H)"
+              aria-label="Open Beginner Guide Manual"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden md:inline text-[11px]">Manual</span>
+            </button>
+
+            {/* Ghost Cursor Toggle Button */}
+            <button
+              onClick={handleToggleGhostCursor}
+              className={`px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-colors ${
+                ghostCursorEnabled
+                  ? "border-amber-500/70 bg-amber-500/20 text-amber-300 shadow-sm shadow-amber-500/20"
+                  : "border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200"
+              }`}
+              title={ghostCursorEnabled ? "Turn off Ghost Cursor (C)" : "Turn on Ghost Cursor (C)"}
+              aria-label="Toggle Ghost Cursor"
+            >
+              <span className="text-xs">👻</span>
+              <span className="hidden xl:inline text-[11px]">Cursor</span>
+            </button>
+
             {/* Ambient Sound Drone Toggle */}
             <button
               onClick={handleToggleDrone}
               title={isDroneOn ? "Turn off Séance Ambient Drone (D)" : "Turn on Séance Ambient Drone (D)"}
-              className={`px-2.5 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-colors ${
+              className={`px-2 sm:px-2.5 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-1.5 transition-colors ${
                 isDroneOn
                   ? "border-amber-500/70 bg-amber-500/20 text-amber-300 shadow-sm shadow-amber-500/20"
                   : "border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:text-zinc-200"
               }`}
+              aria-label="Toggle Séance Ambient Drone"
             >
               <Waves className={`w-3.5 h-3.5 ${isDroneOn ? "animate-pulse" : ""}`} />
               <span className="hidden xl:inline text-[11px]">Ambient</span>
@@ -240,6 +307,7 @@ export default function App() {
                 onClick={handleToggleSound}
                 className="p-1 rounded text-zinc-300 hover:text-white transition-colors"
                 title={isMuted ? "Unmute Audio (M)" : "Mute Audio (M)"}
+                aria-label="Toggle Audio Mute"
               >
                 {isMuted ? (
                   <VolumeX className="w-4 h-4 text-zinc-500" />
@@ -267,7 +335,7 @@ export default function App() {
                 value={isMuted ? 0 : volume}
                 onChange={handleVolumeChange}
                 aria-label="Master audio volume"
-                className="w-14 h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-amber-500 hidden md:inline-block"
+                className="w-12 sm:w-14 h-1.5 bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-amber-500 hidden md:inline-block"
                 title={`Volume: ${Math.round(volume * 100)}%`}
               />
             </div>
@@ -277,6 +345,7 @@ export default function App() {
               onClick={cycleTheme}
               className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-lg border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-300 flex items-center gap-1.5 text-xs transition-colors"
               title={`Active Theme: ${theme.toUpperCase()} (Click to cycle)`}
+              aria-label="Cycle Theme Palette"
             >
               <Palette className="w-3.5 h-3.5 text-amber-400" />
               <span className="hidden lg:inline capitalize font-mono text-[11px]">{theme}</span>
@@ -297,7 +366,8 @@ export default function App() {
               href="https://github.com/Dev-Suraj-Dhawal/ghost-in-the-machine"
               target="_blank"
               rel="noreferrer"
-              className="px-2.5 py-1.5 rounded-lg border border-zinc-700/80 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors"
+              className="px-2 sm:px-2.5 py-1.5 rounded-lg border border-zinc-700/80 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors"
+              aria-label="GitHub Repository"
             >
               <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
                 <path
@@ -335,9 +405,24 @@ export default function App() {
         )}
       </main>
 
+      {/* 2. Interactive Halloween Floating Ghost Mascot */}
+      <GhostMascot
+        theme={theme}
+        onOpenGuide={() => setShowGuideModal(true)}
+        onSwitchTab={handleTabChange}
+      />
+
+      {/* 3. Comprehensive Beginner's Grimoire & Manual Modal */}
+      <BeginnerGuideModal
+        isOpen={showGuideModal}
+        onClose={() => setShowGuideModal(false)}
+        theme={theme}
+        onSelectTab={handleTabChange}
+      />
+
       {/* Keyboard Shortcuts Modal */}
       {showShortcutsModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-150">
           <div className="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
             <button
               onClick={() => setShowShortcutsModal(false)}
@@ -372,8 +457,16 @@ export default function App() {
                 <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">M</kbd>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
-                <span className="text-zinc-300">Toggle Ambient Séance Drone</span>
+                <span className="text-zinc-300">Toggle Ambient Drone</span>
                 <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">D</kbd>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
+                <span className="text-zinc-300">Toggle Ghost Pointer</span>
+                <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">C</kbd>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
+                <span className="text-zinc-300">Open Beginner Manual</span>
+                <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">H</kbd>
               </div>
               <div className="flex justify-between items-center py-1.5">
                 <span className="text-zinc-300">Open This Help Dialog</span>
