@@ -22,7 +22,7 @@ I built **Ghost in the Machine** — an offline-first dual-mode cyber-folklore e
 
 ## Demo
 
-- **Live Production URL**: [https://ghost-in-the-machine.vercel.app](https://ghost-in-the-machine.vercel.app) *(or live deployment link)*
+- **Live Production URL**: [https://ghost-in-the-machine-kappa.vercel.app](https://ghost-in-the-machine-kappa.vercel.app)
 - **GitHub Repository**: [https://github.com/Dev-Suraj-Dhawal/ghost-in-the-machine](https://github.com/Dev-Suraj-Dhawal/ghost-in-the-machine)
 
 ---

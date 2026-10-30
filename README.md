@@ -8,7 +8,7 @@
 [![Open Source AI](https://img.shields.io/badge/Open--Source_AI-100%25_Private-10b981?style=for-the-badge&logo=openai&logoColor=white)](https://huggingface.co/)
 [![React 19](https://img.shields.io/badge/React_19-Vite_6-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Vercel Deployed](https://img.shields.io/badge/Vercel-Production_Live-black?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![Vercel Deployed](https://img.shields.io/badge/Vercel-ghost--in--the--machine--kappa.vercel.app-black?style=for-the-badge&logo=vercel&logoColor=white)](https://ghost-in-the-machine-kappa.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 <p align="center">
