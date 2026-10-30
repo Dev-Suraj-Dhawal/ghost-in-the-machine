@@ -9,10 +9,18 @@ import { sound } from "@/lib/soundEngine";
 interface NecroShellProps {
   onNavigateToOfrenda?: () => void;
   onNavigateToInvestigator?: () => void;
+  onNavigateToManifesto?: () => void;
+  onOpenGuide?: () => void;
   aiConfig: AIInferenceConfig;
 }
 
-export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigator, aiConfig }: NecroShellProps) {
+export default function NecroShell({
+  onNavigateToOfrenda,
+  onNavigateToInvestigator,
+  onNavigateToManifesto,
+  onOpenGuide,
+  aiConfig,
+}: NecroShellProps) {
   const [history, setHistory] = useState<TerminalHistoryItem[]>([
     {
       id: "init-1",
@@ -110,6 +118,24 @@ export default function NecroShell({ onNavigateToOfrenda, onNavigateToInvestigat
       setIsProcessing(false);
       if (onNavigateToInvestigator) {
         onNavigateToInvestigator();
+      }
+      return;
+    }
+
+    if (action === "manifesto" || action === "whyopen") {
+      sound.playSpectralTone(300, 0.3);
+      setIsProcessing(false);
+      if (onNavigateToManifesto) {
+        onNavigateToManifesto();
+      }
+      return;
+    }
+
+    if (action === "manual" || action === "guide") {
+      sound.playCandleChime();
+      setIsProcessing(false);
+      if (onOpenGuide) {
+        onOpenGuide();
       }
       return;
     }

@@ -85,6 +85,13 @@ const DECREE_COMMANDS: DecreeCommand[] = [
     decreeDetail: "Opens the 60fps radar sweep tracking midnight smart-home sensor anomalies.",
     astralConsequence: "Plots real-time 18.98Hz infrasound and 7.83Hz Schumann planetary resonance waves.",
   },
+  {
+    command: "manifesto",
+    title: "Open Why Open Innovation Dossier",
+    category: "Manifesto",
+    decreeDetail: "Inspects why open-source AI is the only ethical architecture for mourning and cultural remembrance.",
+    astralConsequence: "Switches to the architectural comparison proving 0 cloud leaks and total privacy.",
+  },
 ];
 
 export default function BeginnerGuideModal({
