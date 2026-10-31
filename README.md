@@ -19,7 +19,34 @@
 
 [**🌐 Experience Live Séance on Vercel**](https://ghost-in-the-machine-kappa.vercel.app) • [**🏛️ Architecture Spec**](ARCHITECTURE.md) • [**🛡️ Security Model**](SECURITY.md) • [**🤝 Contributing Guide**](CONTRIBUTING.md)
 
+<br/>
+
+<p align="center">
+  <img src="docs/screenshots/01-necro-shell-possessed-terminal.png" alt="Ghost in the Machine NecroShell Terminal" width="95%" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);" />
+</p>
+
 </div>
+
+---
+
+## 📸 Visual Showcase & Feature Tour
+
+Experience the core interfaces of **Ghost in the Machine**:
+
+| 📟 1. NecroShell Possessed Terminal | 🕯️ 2. Living Ofrenda Sanctuary Altar |
+| :---: | :---: |
+| [![NecroShell](docs/screenshots/01-necro-shell-possessed-terminal.png)](docs/screenshots/01-necro-shell-possessed-terminal.png) | [![Living Ofrenda](docs/screenshots/02-living-ofrenda-altar.png)](docs/screenshots/02-living-ofrenda-altar.png) |
+| *Retro green-phosphor CRT shell with procedural audio synthesis, 100% synchronized dynamic master volume, and quick séance spells.* | *Candlelit Día de los Muertos sanctuary with floating dual-bezier marigold petal physics, custom eulogies, and Solfeggio 528Hz chimes.* |
+
+| 📡 3. Phantom Investigator Telemetry Radar | 🛡️ 4. Why Open Innovation Manifesto |
+| :---: | :---: |
+| [![Phantom Investigator](docs/screenshots/03-phantom-investigator-radar.png)](docs/screenshots/03-phantom-investigator-radar.png) | [![Open Innovation](docs/screenshots/04-open-innovation-manifesto.png)](docs/screenshots/04-open-innovation-manifesto.png) |
+| *60fps radial radar sweep tracking smart home anomalies, 18.98Hz infrasound, and 7.83Hz Schumann planetary resonance.* | *Architectural breakdown proving zero data leaks, full offline survivability, and cultural sovereignty with open-source AI.* |
+
+| 📜 5. Royal Farman Scroll Manual | 🎴 6. Digital Memorial Card PNG Export |
+| :---: | :---: |
+| [![Royal Farman Manual](docs/screenshots/05-royal-farman-scroll-guide.png)](docs/screenshots/05-royal-farman-scroll-guide.png) | [![Memorial Card Export](docs/screenshots/06-digital-memorial-card-export.png)](docs/screenshots/06-digital-memorial-card-export.png) |
+| *Ancient royal Indian maharaja scroll aesthetic with carved gold dowels, wax seal, copyable decree cartouches, and apprentice guidance.* | *High-resolution (1000×650 PNG) digital memorial card generated in-browser with authentic Mexican ornamental borders.* |
 
 ---
 
