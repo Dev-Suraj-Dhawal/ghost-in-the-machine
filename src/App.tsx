@@ -576,7 +576,12 @@ export default function App() {
         )}
 
         {activeTab === "manifesto" && (
-          <OpenInnovationComparison config={aiConfig} onConfigChange={setAiConfig} />
+          <OpenInnovationComparison
+            config={aiConfig}
+            onConfigChange={setAiConfig}
+            onNavigateToTab={handleTabChange}
+            onOpenGuide={() => setShowGuideModal(true)}
+          />
         )}
       </main>
 
