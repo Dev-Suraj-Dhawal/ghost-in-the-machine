@@ -123,6 +123,29 @@ In a world increasingly dominated by opaque, closed cloud APIs, building **Ghost
 
 ---
 
+## 🤝 Community Roots & Hackathon Journey
+
+### What made you want to build this?
+I have long reflected on the ethical boundaries of modern technology, especially through my experience co-organizing community tech initiatives like **Hacktoberfest Hack Day Bhairahawa with Graphilla Technology**, where I mentored student developers through their first open-source pull requests. In tech, we increasingly hand over our most intimate human experiences—family memories, grief, and cultural traditions—to closed corporate cloud APIs that harvest personal telemetry.
+
+The spark to build **Ghost in the Machine** came together specifically this weekend as Halloween and Día de los Muertos approached. I asked: *Can open-source AI and browser-native technology create a sacred, permanent memorial sanctuary that respects absolute privacy?* The hackathon weekend allowed me to bring all the pieces together into an airgapped, storm-resilient reality.
+
+### How is this problem being solved today, and what's wrong with that approach?
+Today, digital memorials and AI grief tools are almost exclusively hosted on closed cloud platforms and proprietary LLM APIs.
+- **Privacy Violations:** Intimate memories and family tributes are harvested and stored on remote corporate servers.
+- **Fragility & Paywalls:** They depend on constant internet access, API uptime, and recurring subscriptions. If a storm knocks out power, an API key expires, or a company shuts down, the memorial disappears.
+- **Cultural Censorship:** Closed models often sanitize or block authentic folk traditions like Mexican *Calaveritas* due to rigid, generic safety guardrails.
+
+**Ghost in the Machine** replaces this model with a sovereign, airgapped architecture running entirely in local memory—costing $0.00 forever, working 100% offline by candlelight, and synthesizing its entire audio landscape procedurally with 0 MB of downloaded audio assets.
+
+### What's the very next thing you'd do with it?
+1. **In-Browser WebGPU Open Weights:** Integrate client-side 4-bit quantized micro-models (such as SmolLM 135M or Qwen2.5 0.5B via WebGPU in Transformers.js v4) for instant on-device generation without requiring an external Ollama daemon.
+2. **Airgapped Physical "Sanctuary Box" (Raspberry Pi Appliance):** Package the system as a bootable, zero-setup Linux image for a Raspberry Pi connected to an e-ink or vintage composite CRT monitor for families to place directly on an altar.
+3. **P2P Local Mesh Sync:** Implement local WebRTC / mDNS peer-to-peer synchronization so devices in the same room can share offerings and calaveritas directly device-to-device with zero central servers.
+4. **Community Open-Source Mentorship:** Run hands-on open-source workshops teaching student developers how to build sovereign, privacy-preserving AI tools for their own local cultures and languages.
+
+---
+
 ## 🤖 My Agent Session
 
 This project was built collaboratively with **Google DeepMind Antigravity**, leveraging advanced agentic pair programming:
