@@ -681,14 +681,16 @@ export default function App() {
             </a>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px] font-mono text-zinc-400 flex-wrap justify-center">
-            <span>Built by Suraj Dhawal</span>
+          <div className="flex items-center gap-2.5 text-[11px] font-mono text-zinc-400 flex-wrap justify-center">
+            <span>Built by <strong className="text-zinc-200">Suraj Dhawal</strong></span>
             <span>•</span>
-            <span className="text-emerald-400">100% Client-Side Privacy</span>
+            <span className="text-amber-300">Hack Day Bhairahawa × Graphilla Technology</span>
             <span>•</span>
-            <span className="capitalize">{theme} Theme Active</span>
+            <span className="text-emerald-400">100% Client-Side Airgapped</span>
             <span>•</span>
-            <span>Día de los Muertos & Halloween</span>
+            <span className="text-cyan-300">0 MB Audio Bloat</span>
+            <span>•</span>
+            <span className="capitalize text-zinc-300">{theme} Theme</span>
           </div>
         </div>
       </footer>
