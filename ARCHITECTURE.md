@@ -142,3 +142,36 @@ User Input Query
 
 All keys can be completely purged at any time using the ErrorBoundary "Purge Cache & Reset" action or browser clear data.
 
+---
+
+## 6. Real-Time Synchronized Volume Observer (`sound.subscribeVolume`)
+
+To maintain absolute parity between OS audio levels, UI volume sliders, and procedural Web Audio gain nodes, the audio architecture implements a reactive observer pattern:
+
+```typescript
+type VolumeListener = (volume: number, isMuted: boolean) => void;
+
+class SoundEngine {
+  private listeners: Set<VolumeListener> = new Set();
+  
+  public subscribeVolume(listener: VolumeListener): () => void {
+    this.listeners.add(listener);
+    listener(this.masterVolume, this.isMuted);
+    return () => this.listeners.delete(listener);
+  }
+}
+```
+
+- **Two-Way Synchronization**: Moving the volume slider in NecroShell instantly updates the header audio capsule and drone attenuation.
+- **Hardware Mute Preservation**: Pressing <kbd>M</kbd> clamps master gain to `0.0` without losing the stored volume level, allowing seamless restoration upon unmuting.
+
+---
+
+## 7. Zero-Egress Airgap & Telemetry Audit Model
+
+The application enforces a mathematically auditable airgap:
+- **0 KB Outbound Telemetry**: No tracking beacons, analytics scripts, or third-party fonts.
+- **0 MB External Audio Footprint**: 100% of sound effects, chimes, key clicks, and drone harmonics are synthesized in client memory via `AudioContext`.
+- **Local Daemon Health Probe**: When configured for Ollama, requests are confined strictly to `http://localhost:11434/api/tags` with automatic fallback to client-side WASM heuristics if the local daemon is offline.
+
+
