@@ -198,8 +198,12 @@ Inside the possessed terminal (`NecroShell`):
 - `whoami` — Query your existential digital status in the machine
 - `ls` — Inspect phantom registers and historical spirit files
 - `cat <file>` — Read cursed records (`hopper`, `ada`, `ritchie`, `turing`, `lamarr`, `hamilton`)
-- `seance <name>` — Summon spirits of computing history
+- `seance <name>` — Summon spirits of computing history (`ada`, `turing`, `hopper`, `ritchie`, `hedy`, `hamilton`)
+- `pioneers` — Directory matrix of all 6 computing pioneers and quick invocations
 - `whisper <query>` — Commune directly with the machine's inner ghost
+- `oracle` — Consult the Silicon Oracle for ancestral and creative prophecies
+- `rain` — Cascade a CRT green phosphor rain of symbols and marigold petals
+- `synth` — Inspect and audition the Web Audio procedural sound synthesis nodes
 - `possessed` — Trigger a full spectral CRT glitch sequence
 - `ofrenda` — Open the Día de los Muertos Living Altar
 - `investigate` — Open the Paranormal IoT Telemetry Investigator

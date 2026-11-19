@@ -51,6 +51,27 @@ const DECREE_COMMANDS: DecreeCommand[] = [
     astralConsequence: "The CRT pulses with phosphor light as Ada assumes command of the terminal stdin/stdout.",
   },
   {
+    command: "seance hamilton",
+    title: "Summon Margaret Hamilton (Apollo 11)",
+    category: "Séance",
+    decreeDetail: "Channels Apollo 11 Software Director Margaret Hamilton to explain asynchronous priority scheduling and software engineering.",
+    astralConsequence: "Relives the 1202 alarm and lunar module guidance software triumph.",
+  },
+  {
+    command: "oracle",
+    title: "Consult the Silicon Oracle",
+    category: "Divination",
+    decreeDetail: "Draws an ancestral prophecy card from the Silicon Oracle for algorithmic and creative guidance.",
+    astralConsequence: "Resounds with Solfeggio 528Hz bell harmonics and ethereal vocal whisper.",
+  },
+  {
+    command: "rain",
+    title: "Invoke Phosphor & Petal Matrix Rain",
+    category: "Supernatural",
+    decreeDetail: "Cascades a CRT green phosphor rain of symbols, mathematics, and marigold petals across the shell.",
+    astralConsequence: "Accompanied by autumnal pink-noise wind synthesis.",
+  },
+  {
     command: "whisper Why did you invent the first algorithm?",
     title: "Commune Directly with the Spirit",
     category: "Dialogue",
