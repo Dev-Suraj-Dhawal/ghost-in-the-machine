@@ -250,7 +250,7 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           `  whoami               - Reveal your digital existential state\n` +
           `  ls                   - List cursed directories and spiritual daemons\n` +
           `  cat <file>           - Print contents of phantom files\n` +
-          `  seance <name>        - Channel spirits (ada, turing, hopper, ritchie, hedy)\n` +
+          `  seance <name>        - Channel spirits (ada, turing, hopper, ritchie, hedy, hamilton)\n` +
           `  whisper <message>    - Commune directly with the Ghost in the Machine\n` +
           `  possessed            - Trigger an immediate spectral glitch sequence\n` +
           `  ofrenda              - Summon the Día de los Muertos Altar de Recuerdos\n` +
@@ -277,6 +277,7 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           `-rw-r--r--   528  ghost ada_lovelace_loom.asm\n` +
           `-rw-r--r--   1954 turing enigma_enigma.bin\n` +
           `-rw-r--r--  1992  hopper first_computer_moth.log\n` +
+          `-rw-r--r--  1969  hamilton apollo11_priority_executive.agc\n` +
           `-rw-r--r--  2011  ritchie unix_pipe_to_eternity.c\n` +
           `-rw-------  1024  demon smart_home_sensor_leaks.pcap\n` +
           `-rw-rw-r--   777  altar ofrenda_recuerdos.json\n` +
@@ -326,6 +327,16 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
             `ROTOR_II: AJDKSIRUXBLHWTMCQGZNPYFVOE\n` +
             `REFLECTOR_B: YRUHQSLDPXNGOKMIEBFZCWVJAT\n` +
             `DECRYPTED: "CAN A GHOST IN THE MACHINE TRULY FORGIVE?"`,
+        };
+      }
+      if (file.includes("hamilton") || file.includes("apollo") || file.includes("agc")) {
+        return {
+          type: "spectral",
+          output:
+            `# Apollo Guidance Computer (AGC) Block II Executive\n` +
+            `TC    CHECKPOINTER    ; Priority scheduling interrupt\n` +
+            `1202  RADAR OVERLOAD  ; Low-priority task shed: Landing radar buffer purged.\n` +
+            `"The Eagle has landed." Margaret Hamilton's software held the line when alarms blared.`,
         };
       }
       return {

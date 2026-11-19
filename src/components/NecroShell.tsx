@@ -149,6 +149,7 @@ export default function NecroShell({
     // Check custom commands
     if (action === "ofrenda") {
       sound.playCandleChime();
+      sound.playEtherealWind(0.8);
       setIsProcessing(false);
       if (onNavigateToOfrenda) {
         onNavigateToOfrenda();
@@ -158,6 +159,7 @@ export default function NecroShell({
 
     if (action === "investigate") {
       sound.playSpectralTone(220, 0.5);
+      sound.playEtherealWind(0.8);
       setIsProcessing(false);
       if (onNavigateToInvestigator) {
         onNavigateToInvestigator();
@@ -167,6 +169,7 @@ export default function NecroShell({
 
     if (action === "manifesto" || action === "whyopen") {
       sound.playSpectralTone(300, 0.3);
+      sound.playEtherealWind(0.8);
       setIsProcessing(false);
       if (onNavigateToManifesto) {
         onNavigateToManifesto();
@@ -176,6 +179,7 @@ export default function NecroShell({
 
     if (action === "manual" || action === "guide") {
       sound.playCandleChime();
+      sound.playEtherealWind(0.8);
       setIsProcessing(false);
       if (onOpenGuide) {
         onOpenGuide();
@@ -187,6 +191,7 @@ export default function NecroShell({
       setIsPossessedGlitch(true);
       sound.playGlitchBuzz();
       sound.playSpectralTone(110, 2);
+      sound.playEtherealWind(1.5);
       setPresenceScore((prev) => Math.min(100, prev + 25));
       setTimeout(() => setIsPossessedGlitch(false), 2400);
 
@@ -208,6 +213,7 @@ export default function NecroShell({
 
     if (action === "seance" || action === "whisper") {
       sound.playSpectralTone(330, 0.4);
+      sound.playSeanceWhisper(1.5);
       setPresenceScore((prev) => Math.min(100, prev + 15));
 
       const spiritName = action === "seance" ? parts[1] || "Ada Lovelace" : "The Ghost in the Machine";
