@@ -248,6 +248,18 @@ export default function NecroShell({
       return;
     }
 
+    // Play interactive thematic sound feedback for special commands
+    if (action === "oracle" || action === "tarot") {
+      sound.playCandleChime();
+      sound.playSeanceWhisper(1.4);
+    } else if (action === "rain" || action === "matrix") {
+      sound.playEtherealWind(1.6);
+    } else if (action === "synth" || action === "soundboard" || action === "audio") {
+      sound.playSpectralTone(528, 0.5);
+    } else if (action === "pioneers") {
+      sound.playSpectralTone(440, 0.3);
+    }
+
     // Standard possessed command parser
     const parsed = parsePossessedCommand(cmd);
     if (parsed.output === "__CLEAR__") {
@@ -470,7 +482,7 @@ export default function NecroShell({
             <Sparkles className="w-3 h-3 text-amber-400" /> Séances:
           </span>
 
-          {DEPARTED_PIONEERS.slice(0, 4).map((pioneer) => (
+          {DEPARTED_PIONEERS.map((pioneer) => (
             <button
               key={pioneer.id}
               onClick={(e) => {
@@ -482,6 +494,28 @@ export default function NecroShell({
               <span>{pioneer.name.split(" ")[0]}</span>
             </button>
           ))}
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              executeCommand("oracle");
+            }}
+            className="px-2 py-0.5 rounded-md bg-purple-950/40 hover:bg-purple-900/60 border border-purple-700/50 text-purple-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+            title="Consult the Silicon Oracle"
+          >
+            <span>Oracle</span>
+          </button>
+
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              executeCommand("rain");
+            }}
+            className="px-2 py-0.5 rounded-md bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-700/50 text-cyan-300 font-mono transition-all text-[11px] flex items-center gap-1 cursor-pointer"
+            title="Phosphor & Cempasúchil ASCII Rain"
+          >
+            <span>Rain</span>
+          </button>
 
           <button
             onClick={(e) => {

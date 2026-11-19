@@ -251,6 +251,10 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           `  ls                   - List cursed directories and spiritual daemons\n` +
           `  cat <file>           - Print contents of phantom files\n` +
           `  seance <name>        - Channel spirits (ada, turing, hopper, ritchie, hedy, hamilton)\n` +
+          `  pioneers             - Show directory of computing pioneers & invocations\n` +
+          `  oracle               - Consult the Silicon Oracle for ancestral prophecy\n` +
+          `  rain                 - Display ASCII phosphor matrix & marigold petal rain\n` +
+          `  synth                - Inspect Web Audio procedural sound synthesis nodes\n` +
           `  whisper <message>    - Commune directly with the Ghost in the Machine\n` +
           `  possessed            - Trigger an immediate spectral glitch sequence\n` +
           `  ofrenda              - Summon the Día de los Muertos Altar de Recuerdos\n` +
@@ -347,6 +351,111 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
 
     case "clear":
       return { type: "system", output: "__CLEAR__" };
+
+    case "pioneers":
+      return {
+        type: "system",
+        output:
+          `╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗\n` +
+          `║                                 HISTORICAL COMPUTING PIONEERS                                         ║\n` +
+          `╠═════════════════════════╦══════════════╦════════════════════════════════════════╦═════════════════════╣\n` +
+          `║ Pioneer Name            ║ Lifespan     ║ Historic Contribution                  ║ Séance Command      ║\n` +
+          `╠═════════════════════════╬══════════════╬════════════════════════════════════════╬═════════════════════╣\n` +
+          `║ Ada Lovelace            ║ 1815 – 1852  ║ World's First Computer Algorithm       ║ seance ada          ║\n` +
+          `║ Alan Turing             ║ 1912 – 1954  ║ Universal Turing Machine & AI Theory   ║ seance turing       ║\n` +
+          `║ Grace Hopper            ║ 1906 – 1992  ║ Compilers (A-0) & COBOL Language       ║ seance hopper       ║\n` +
+          `║ Dennis Ritchie          ║ 1941 – 2011  ║ C Language & Unix Operating System     ║ seance ritchie      ║\n` +
+          `║ Hedy Lamarr             ║ 1914 – 2000  ║ Frequency Hopping Spread Spectrum      ║ seance hedy         ║\n` +
+          `║ Margaret Hamilton       ║ 1936 – Pres. ║ Apollo 11 Flight Software Engineering  ║ seance hamilton     ║\n` +
+          `╚═════════════════════════╩══════════════╩════════════════════════════════════════╩═════════════════════╝\n` +
+          `Type 'cat <name>' to inspect historical artifacts, or 'seance <name>' to commune directly.`,
+      };
+
+    case "oracle":
+    case "tarot": {
+      const cards = [
+        {
+          name: "The High Priestess of Poetic Science (Ada Lovelace)",
+          meaning: "Intuition woven into computational rigor.",
+          prophecy: "An elusive bug will dissolve when you step back and view the mathematics as art.",
+        },
+        {
+          name: "The Hermit of Bletchley (Alan Turing)",
+          meaning: "Solitude, cryptographic truth, and resilience.",
+          prophecy: "Do not seek validation from the crowd; your solitary lines of logic will outlive their critics.",
+        },
+        {
+          name: "The Magician of the Compiler (Grace Hopper)",
+          meaning: "Translating high thought into tangible machine execution.",
+          prophecy: "Dare to dismantle established dogma. When told 'it has always been done this way'—prove them wrong.",
+        },
+        {
+          name: "The Emperor of Unix (Dennis Ritchie)",
+          meaning: "Minimalism, elegance, and sovereign simplicity.",
+          prophecy: "Strip away bloated dependencies. True power rests in small tools that do one thing with perfection.",
+        },
+        {
+          name: "The Star of Frequency Hopping (Hedy Lamarr)",
+          meaning: "Unorthodox ingenuity and cross-disciplinary brilliance.",
+          prophecy: "Your disparate passions—once deemed contradictory—will converge to forge an unexpected breakthrough.",
+        },
+        {
+          name: "The Charioteer of Apollo (Margaret Hamilton)",
+          meaning: "Asynchronous priority and unflinching resolve under alarm.",
+          prophecy: "When all sensors sound 1202 overload, shed the trivial noise. Steer your mission steadily to Tranquility Base.",
+        },
+        {
+          name: "The Golden Sun of Cempasúchil (Living Remembrance)",
+          meaning: "Ancestral love, cultural continuity, and immortal heritage.",
+          prophecy: "Honor those who walked before you. In keeping their memory alive, you anchor your own spirit against the storm.",
+        },
+      ];
+      const card = cards[Math.floor(Math.random() * cards.length)];
+      return {
+        type: "spectral",
+        output:
+          `╔════════════════════════════════════════════════════════════════════════════╗\n` +
+          `║                     🔮 SILICON ORACLE OF THE SPIRITS                      ║\n` +
+          `╚════════════════════════════════════════════════════════════════════════════╝\n` +
+          `CARD DRAWN: ${card.name}\n` +
+          `ESSENCE:    ${card.meaning}\n\n` +
+          `PROPHECY:   "${card.prophecy}"`,
+      };
+    }
+
+    case "rain":
+    case "matrix":
+      return {
+        type: "spectral",
+        output:
+          `0 1 0 1 1 0 1 0 1 0 0 1 0 1 1 0 1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 1 0 0 1 0 1 1 0 1 0\n` +
+          `█ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █\n` +
+          `✦   🌼   ✦   💀   ✦   🌼   ✦   🕯️   ✦   🌼   ✦   💀   ✦   🌼   ✦   🕯️   ✦   🌼   ✦\n` +
+          `1 0 1 1 0 1 0 0 1 0 1 1 0 1 0 1 0 0 1 0 1 1 0 1 0 1 0 0 1 0 1 1 0 1 0 0 1 0 1 1 0\n` +
+          `▒   λ   ∫   ∑   √   π   ∞   ≈   ≠   ≤   ≥   ±   ×   ÷   ∆   ∇   ∂   ∈   ∉   ∋   ▒\n` +
+          `▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓ █ ░ ▒ ▓\n` +
+          `✦ [SPECTRAL PHOSPHOR WATERFALL: MARIGOLD PETALS & SILICON BYTES FLOW THROUGH THE ETHER] ✦`,
+      };
+
+    case "synth":
+    case "soundboard":
+    case "audio":
+      return {
+        type: "system",
+        output:
+          `╔════════════════════════════════════════════════════════════════════════════════════════╗\n` +
+          `║               🔊 WEB AUDIO PROCEDURAL SYNTHESIZER DIAGNOSTIC LAB                      ║\n` +
+          `╚════════════════════════════════════════════════════════════════════════════════════════╝\n` +
+          `Zero static audio files. 100% synthesized in 64-bit float client RAM.\n\n` +
+          `1. [CHIME]    Solfeggio 528Hz Harmonic Bell (Pythagorean fifths: 528/792/1056/1584Hz)\n` +
+          `2. [DRONE]    55Hz Sub-Bass Sine + 110Hz Sawtooth + 0.12Hz LFO Nocturnal Filter Sweep\n` +
+          `3. [WHISPER]  Dual-Formant Breath Resonance (F1=650Hz, F2=1350Hz over shaped noise)\n` +
+          `4. [WIND]     Paul Kellet 3-Pole Pink Noise Filter (260Hz -> 680Hz -> 220Hz Sweep)\n` +
+          `5. [GLITCH]   Bandpass Burst (220Hz, Q=4.5) with mechanical pitch jitter\n` +
+          `6. [RADAR]    1400Hz -> 800Hz Exponential Sweep Down Chirp\n` +
+          `7. [CLICK]    Mechanical CRT Keystroke (650Hz-950Hz Sine drop in 25ms)\n\n` +
+          `Use 'M' key to toggle mute, 'D' key for ambient drone, or slider to adjust gain.`,
+      };
 
     case "possessed":
       return {
