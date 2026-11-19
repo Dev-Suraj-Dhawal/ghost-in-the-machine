@@ -380,6 +380,100 @@ class SoundEngine {
       // ignore
     }
   }
+
+  public playEtherealWind(duration: number = 1.2) {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx || !this.masterGain) return;
+
+    try {
+      const now = this.ctx.currentTime;
+      const bufferSize = Math.floor(this.ctx.sampleRate * duration);
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      // Pink noise approximation for natural wind turbulence
+      let b0 = 0, b1 = 0, b2 = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        b0 = 0.99765 * b0 + white * 0.0990460;
+        b1 = 0.96300 * b1 + white * 0.2965164;
+        b2 = 0.57000 * b2 + white * 1.0526913;
+        data[i] = (b0 + b1 + b2 + white * 0.1848) * 0.08;
+      }
+
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(260, now);
+      filter.frequency.exponentialRampToValueAtTime(680, now + duration * 0.5);
+      filter.frequency.exponentialRampToValueAtTime(220, now + duration);
+      filter.Q.setValueAtTime(2.2, now);
+
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.001, now);
+      gain.gain.linearRampToValueAtTime(0.12, now + duration * 0.35);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.masterGain);
+
+      noise.start(now);
+      this.notifyActivity(0.7);
+    } catch {
+      // ignore
+    }
+  }
+
+  public playSeanceWhisper(duration: number = 1.6) {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx || !this.masterGain) return;
+
+    try {
+      const now = this.ctx.currentTime;
+      const bufferSize = Math.floor(this.ctx.sampleRate * duration);
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.12;
+      }
+
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      // Dual vocal formant filters (F1: ~650Hz, F2: ~1350Hz) simulating a breathy whisper
+      const filter1 = this.ctx.createBiquadFilter();
+      filter1.type = "bandpass";
+      filter1.frequency.setValueAtTime(650, now);
+      filter1.Q.setValueAtTime(6.0, now);
+
+      const filter2 = this.ctx.createBiquadFilter();
+      filter2.type = "bandpass";
+      filter2.frequency.setValueAtTime(1350, now);
+      filter2.Q.setValueAtTime(7.0, now);
+
+      const whisperGain = this.ctx.createGain();
+      whisperGain.gain.setValueAtTime(0.001, now);
+      whisperGain.gain.linearRampToValueAtTime(0.15, now + 0.4);
+      whisperGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      noise.connect(filter1);
+      noise.connect(filter2);
+      filter1.connect(whisperGain);
+      filter2.connect(whisperGain);
+      whisperGain.connect(this.masterGain);
+
+      noise.start(now);
+      this.notifyActivity(0.85);
+    } catch {
+      // ignore
+    }
+  }
 }
 
 export const sound = new SoundEngine();
