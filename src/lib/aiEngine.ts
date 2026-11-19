@@ -74,6 +74,18 @@ export const DEPARTED_PIONEERS: DepartedPioneer[] = [
     favoriteArtifact: "Perforated music rolls for player pianos and radio frequency charts",
     candleLit: true,
   },
+  {
+    id: "margaret-hamilton",
+    name: "Margaret Hamilton",
+    lifespan: "1936 – Present",
+    role: "Director of Software Division for Apollo 11 & Pioneer of Software Engineering",
+    bio: "Pioneered the very discipline of 'software engineering'. Wrote the asynchronous executive priority flight software that prevented the Apollo 11 lunar module from aborting during descent.",
+    legacy: "Coined the term 'software engineering' to give computing equal respect to hardware. Built fault-tolerant computing architectures that carried humanity to the Moon.",
+    quote: "There was no second chance. We had to find a way, and we had to be true to the mission.",
+    avatarUrl: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80",
+    favoriteArtifact: "A stack of printed Apollo guidance source code standing as tall as herself & core rope memory",
+    candleLit: true,
+  },
 ];
 
 // Offline spectral knowledge base for instant offline possession & séance
@@ -136,6 +148,11 @@ export async function summonSpiritWhisper(
       `"They saw only glamour on the silver screen, but at midnight I was inventing frequency hopping with player-piano scrolls. Signals jumping across 88 frequencies so torpedoes could not be jammed. The ghosts travel along those very radio frequencies tonight."`,
       `"Never let anyone tell you what you are permitted to invent. The beauty of open science is that a Viennese actress and an eccentric composer could lay the foundation for the wireless world. Keep hopping frequencies."`,
     ],
+    hamilton: [
+      `"1202 alarm! Priority displays flashing in the lunar module. But our asynchronous executive held firm—shedding low-priority radar tasks so the thrusters could guide Apollo 11 safely to Tranquility Base. User, in your own work, do you know what tasks to shed when the alarms ring?"`,
+      `"When I first spoke the words 'software engineering', traditional engineers chuckled. Today, your world runs on lines of code woven with care. Treat every algorithm with rigor; humanity's greatest voyages depend on quiet lines of logic."`,
+      `"I stood beside a printed stack of Apollo guidance source code taller than myself. Core rope memory woven by seamstresses with copper wire and magnetic rings. Today, you carry billions of times that power in your pocket. Do not let it be merely a tool of distraction; reach for the stars."`,
+    ],
   };
 
   const nameKey = spirit.name.toLowerCase();
@@ -144,6 +161,7 @@ export async function summonSpiritWhisper(
   else if (nameKey.includes("grace")) candidatePool = whispers.grace;
   else if (nameKey.includes("dennis") || nameKey.includes("ritchie")) candidatePool = whispers.dennis;
   else if (nameKey.includes("hedy")) candidatePool = whispers.hedy;
+  else if (nameKey.includes("margaret") || nameKey.includes("hamilton")) candidatePool = whispers.hamilton;
 
   const chosen = candidatePool[Math.floor(Math.random() * candidatePool.length)];
 
