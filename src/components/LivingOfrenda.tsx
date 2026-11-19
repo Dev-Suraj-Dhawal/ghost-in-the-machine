@@ -327,9 +327,10 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
     if (!candleSender || !candleMessage) return;
 
     sound.playCandleChime();
+    sound.playEtherealWind(1.2);
     confetti({
-      particleCount: 50,
-      spread: 60,
+      particleCount: 55,
+      spread: 65,
       origin: { y: 0.7 },
       colors: ["#f59e0b", "#fbbf24", "#ea580c"],
     });
@@ -347,6 +348,19 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
     setLightModalOpen(false);
     setCandleSender("");
     setCandleMessage("");
+  };
+
+  const handleOfferMarigoldBreeze = () => {
+    sound.playEtherealWind(1.4);
+    sound.playCandleChime();
+    confetti({
+      particleCount: 75,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ["#f59e0b", "#fbbf24", "#ea580c", "#d97706", "#fef08a"],
+    });
+    setExportNotice("🌼 A golden marigold breeze sweeps across the altar, guiding departed spirits.");
+    setTimeout(() => setExportNotice(null), 4000);
   };
 
   const handleGenerateTributeAI = () => {
@@ -476,6 +490,15 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
               className="w-full pl-9 pr-4 py-2 rounded-xl bg-zinc-950/80 border border-amber-900/50 text-xs text-amber-100 placeholder-zinc-500 focus:outline-none focus:border-amber-500"
             />
           </div>
+
+          <button
+            onClick={() => handleOfferMarigoldBreeze()}
+            className="w-full sm:w-auto px-4 py-2 rounded-xl bg-amber-950/60 hover:bg-amber-900/60 border border-amber-600/50 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm shrink-0"
+            title="Scatter Marigold Petals with Autumn Breeze"
+          >
+            <span>🌼</span>
+            <span>Marigold Breeze</span>
+          </button>
 
           <button
             onClick={() => setLightModalOpen(true)}
