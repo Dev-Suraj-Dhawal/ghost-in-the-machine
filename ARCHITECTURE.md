@@ -84,6 +84,13 @@ The sacred Solfeggio frequency historically associated with ancestral repair and
 $$S_{528}(t) = \sin(2\pi \cdot 528.0 \cdot t) \cdot e^{-\lambda t}$$
 Where decay constant \( \lambda = 1.38 \), producing a 2.2-second lingering crystal bell chime with soft envelope tapering.
 
+### 2.5 Dual-Formant Spectral Whisper & Atmospheric Wind DSP
+
+Ghost in the Machine synthesizes ethereal vocal presence and seasonal atmospheric drafts entirely in-browser without recorded audio samples:
+1. **Dual-Formant Vocal Whisper Resonance**: Dual parallel Biquad bandpass filters centered around human speech vowel formants (\( F_1 \approx 650\,\text{Hz} \), \( F_2 \approx 1350\,\text{Hz} \)) with high \( Q \)-factors (\( Q_1 = 6.0, Q_2 = 7.0 \)) driven by shaped white noise:
+   $$W(t) = \left[\text{BPF}_{650, 6}(N(t)) + \text{BPF}_{1350, 7}(N(t))\right] \cdot g_{\text{whisper}}(t)$$
+2. **Procedural Pink-Noise Wind Turbulence**: Approximated via a 3-pole IIR filter cascading white noise through fractional poles (\( 0.099, 0.296, 1.052 \)) and swept across a dynamic bandpass frequency (\( 260\,\text{Hz} \to 680\,\text{Hz} \to 220\,\text{Hz} \)) to simulate fluctuating midnight air currents.
+
 ---
 
 ## 3. High-Resolution Canvas Rendering & Physics

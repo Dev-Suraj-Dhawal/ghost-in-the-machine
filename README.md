@@ -54,7 +54,7 @@ Experience the core interfaces of **Ghost in the Machine**:
 
 **Ghost in the Machine** is an atmospheric multi-theme cyber-folklore installation engineered for the **Hacktoberfest Open-Source AI Challenge Week 4**. Situated between **Halloween (Oct 31)** and **Día de los Muertos (Nov 1–2)**, it bridges eerie digital hauntings with sacred ancestral remembrance:
 
-1. **NecroShell v3.13 (The Possessed Terminal & Séance)**: A retro CRT green-phosphor shell possessed by computing history's greatest minds (*Ada Lovelace, Alan Turing, Grace Hopper, Dennis Ritchie, and Hedy Lamarr*). Features procedural chromatic glitching, authentic terminal commands, and offline prompt kernels.
+1. **NecroShell v3.13 (The Possessed Terminal & Séance)**: A retro CRT green-phosphor shell possessed by computing history's greatest minds (*Ada Lovelace, Alan Turing, Grace Hopper, Dennis Ritchie, Hedy Lamarr, and Margaret Hamilton*). Features procedural chromatic glitching, authentic terminal commands, and offline prompt kernels.
 2. **Altar de Recuerdos (The Living Ofrenda)**: A sacred Día de los Muertos sanctuary with HTML5 Canvas marigold petal physics (*cempasúchil*), flickering candles, and papel picado banners. Generates authentic *Calaveritas Literarias* (satirical folk verses) and allows instant export of high-resolution **Digital Memorial Cards (1000×650 PNG)** with Mexican decorative borders.
 3. **The Phantom Investigator (IoT Radar & Telemetry Oscilloscope)**: A 60fps sweep radar tracking simulated midnight smart home IoT sensor streams. Plots real-time waveforms for the **18.98Hz infrasound wave** (the "ghost frequency") and **7.83Hz Schumann planetary resonance**, with instant export to `.txt`, `.json`, and `.csv`.
 4. **Why Open Innovation Matters**: An interactive architectural breakdown contrasting open-weight models with surveillance-driven corporate cloud APIs in preserving human grief and folklore.
@@ -197,7 +197,7 @@ Inside the possessed terminal (`NecroShell`):
 - `help` — Reveal all forbidden commands and usage instructions
 - `whoami` — Query your existential digital status in the machine
 - `ls` — Inspect phantom registers and historical spirit files
-- `cat <file>` — Read cursed records (`hopper`, `ada`, `ritchie`, `turing`, `lamarr`)
+- `cat <file>` — Read cursed records (`hopper`, `ada`, `ritchie`, `turing`, `lamarr`, `hamilton`)
 - `seance <name>` — Summon spirits of computing history
 - `whisper <query>` — Commune directly with the machine's inner ghost
 - `possessed` — Trigger a full spectral CRT glitch sequence
