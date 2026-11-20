@@ -40,6 +40,31 @@ const GHOST_TIPS = [
     actionLabel: "View Shortcuts",
     tab: undefined,
   },
+  {
+    text: "Seek prophecy? 🔮 Type `oracle` in NecroShell to draw an ancestral Silicon Tarot card!",
+    actionLabel: "Consult Oracle",
+    tab: "terminal" as const,
+  },
+  {
+    text: "Summon Margaret Hamilton (`seance hamilton`) to hear how asynchronous flight software saved Apollo 11!",
+    actionLabel: "Summon Margaret",
+    tab: "terminal" as const,
+  },
+  {
+    text: "Press 'T' on your keyboard anytime to cycle between Cempasúchil, Spectral, and Bloodmoon themes!",
+    actionLabel: "Cycle Themes",
+    tab: undefined,
+  },
+  {
+    text: "Trigger a Marigold Breeze in the Living Ofrenda to scatter golden petals with Solfeggio chimes!",
+    actionLabel: "Visit Ofrenda",
+    tab: "ofrenda" as const,
+  },
+  {
+    text: "Witness an EMP anomaly spike on the 18.98Hz infrasound radar in Telemetry!",
+    actionLabel: "Open Radar",
+    tab: "investigator" as const,
+  },
 ];
 
 export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMascotProps) {
