@@ -91,6 +91,8 @@ export default function App() {
         handleToggleDrone();
       } else if (e.key === "c" || e.key === "C") {
         handleToggleGhostCursor();
+      } else if (e.key === "t" || e.key === "T") {
+        cycleTheme();
       } else if (e.key === "h" || e.key === "H") {
         setShowGuideModal((prev) => !prev);
       } else if (e.key === "?") {
@@ -104,7 +106,7 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isMuted, isDroneOn, ghostCursorEnabled]);
+  }, [isMuted, isDroneOn, ghostCursorEnabled, theme]);
 
   const handleTabChange = (tab: "terminal" | "ofrenda" | "investigator" | "manifesto") => {
     setActiveTab(tab);
@@ -340,6 +342,7 @@ export default function App() {
                   }`}
                 />
                 <span className="capitalize font-mono text-[11px] hidden lg:inline">{theme}</span>
+                <kbd className="text-[9px] px-1 rounded bg-zinc-800 text-zinc-400 font-mono hidden xl:inline">T</kbd>
               </button>
 
               {/* Ghost Cursor Toggle */}
@@ -643,6 +646,10 @@ export default function App() {
               <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
                 <span className="text-zinc-300">Toggle Ghost Pointer</span>
                 <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">C</kbd>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
+                <span className="text-zinc-300">Cycle Theme Palette</span>
+                <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">T</kbd>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
                 <span className="text-zinc-300">Open Beginner Manual</span>
