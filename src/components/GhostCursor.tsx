@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AppTheme } from "@/App";
+import { sound } from "@/lib/soundEngine";
 
 interface GhostCursorProps {
   theme: AppTheme;
@@ -123,7 +124,10 @@ export default function GhostCursor({ theme, enabled = true }: GhostCursorProps)
       }
     };
 
-    const onMouseDown = () => setIsClicking(true);
+    const onMouseDown = () => {
+      setIsClicking(true);
+      sound.playKeyClick();
+    };
     const onMouseUp = () => setIsClicking(false);
 
     window.addEventListener("mousemove", onMouseMove, { passive: true });
