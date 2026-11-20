@@ -86,6 +86,7 @@ Operate the entire paranormal station without touching your mouse:
 | <kbd>M</kbd> | **Toggle Audio Mute** | Instantly silence or restore all procedural Web Audio soundscapes |
 | <kbd>D</kbd> | **Toggle Nocturnal Drone** | Enable/disable the 55Hz sub-bass ambient atmospheric drone |
 | <kbd>C</kbd> | **Toggle Ghost Cursor** | Enable/disable custom ghost pointer & ectoplasm particle physics |
+| <kbd>T</kbd> | **Cycle Theme Palette** | Rotate between Cempasúchil Gold, Spectral Green & Bloodmoon Crimson |
 | <kbd>H</kbd> | **Beginner's Manual** | Open the interactive Apprentice Grimoire with example commands |
 | <kbd>?</kbd> | **Shortcuts Cheatsheet** | Display or dismiss the quick keyboard shortcut reference dialog |
 

@@ -181,4 +181,20 @@ The application enforces a mathematically auditable airgap:
 - **0 MB External Audio Footprint**: 100% of sound effects, chimes, key clicks, and drone harmonics are synthesized in client memory via `AudioContext`.
 - **Local Daemon Health Probe**: When configured for Ollama, requests are confined strictly to `http://localhost:11434/api/tags` with automatic fallback to client-side WASM heuristics if the local daemon is offline.
 
+---
+
+## 8. Global Keyboard Router & Multi-Theme State Architecture
+
+The application implements a dedicated keyboard router in `App.tsx` mapped to the following state transformations:
+
+| Key Binding | State Transition | Audio Resonance |
+| :---: | :--- | :--- |
+| <kbd>1</kbd>–<kbd>4</kbd> | `activeTab` routing (`terminal`, `ofrenda`, `investigator`, `manifesto`) | Typewriter click, Solfeggio chime, Radar ping, Spectral tone |
+| <kbd>T</kbd> | `theme` cycle: `cempasuchil` $\to$ `spectral` $\to$ `bloodmoon` $\to$ `cempasuchil` | 528Hz, 440Hz, or 220Hz harmonic confirmation tone |
+| <kbd>M</kbd> | Toggle `isMuted` clamped to `0.0` gain | Smooth linear gain ramp |
+| <kbd>D</kbd> | Toggle `isAmbientDroneOn` (55Hz sub-bass + 0.12Hz LFO) | Exponential filter crossfade |
+| <kbd>C</kbd> | Toggle `ghostCursorEnabled` (Canvas particle physics reticle) | Instant reticle engage/disengage |
+| <kbd>H</kbd> | Toggle `showGuideModal` (English Royal Farman Scroll) | Solfeggio 528Hz bell chime |
+| <kbd>?</kbd> | Toggle `showShortcutsModal` (Quick keyboard reference cheatsheet) | Keyboard UI focus |
+
 
