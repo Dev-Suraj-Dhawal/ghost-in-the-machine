@@ -104,6 +104,7 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
   const [candleTarget, setCandleTarget] = useState("Ada Lovelace");
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Save to localStorage
   useEffect(() => {
@@ -438,6 +439,91 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
       t.cherishedMemory.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleExportBackup = () => {
+    try {
+      const backupData = {
+        version: "1.0",
+        app: "Ghost in the Machine - Altar de Recuerdos",
+        exportedAt: new Date().toISOString(),
+        tributes: customTributes,
+        candles: candles,
+      };
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `ofrenda_recuerdos_backup_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      sound.playCandleChime();
+      setExportNotice("Sanctuary backup exported successfully as JSON!");
+      setTimeout(() => setExportNotice(null), 4000);
+    } catch {
+      setExportNotice("Failed to export sanctuary backup.");
+      setTimeout(() => setExportNotice(null), 4000);
+    }
+  };
+
+  const handleImportFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const content = event.target?.result as string;
+        const parsed = JSON.parse(content);
+
+        let restoredCount = 0;
+        if (parsed && Array.isArray(parsed.tributes)) {
+          const validTributes = parsed.tributes.filter((t: RemembranceTribute) => t && t.id && t.name);
+          if (validTributes.length > 0) {
+            setCustomTributes((prev) => {
+              const existingIds = new Set(prev.map((t) => t.id));
+              const newTributes = validTributes.filter((t: RemembranceTribute) => !existingIds.has(t.id));
+              restoredCount = newTributes.length;
+              const merged = [...newTributes, ...prev];
+              try {
+                localStorage.setItem("ghost_family_tributes", JSON.stringify(merged));
+              } catch {
+                // ignore
+              }
+              return merged;
+            });
+          }
+        }
+
+        if (parsed && Array.isArray(parsed.candles)) {
+          const validCandles = parsed.candles.filter((c: LitCandle) => c && c.id && c.message);
+          if (validCandles.length > 0) {
+            setCandles((prev) => {
+              const existingIds = new Set(prev.map((c) => c.id));
+              const newCandles = validCandles.filter((c: LitCandle) => !existingIds.has(c.id));
+              const merged = [...newCandles, ...prev];
+              try {
+                localStorage.setItem("ghost_candles", JSON.stringify(merged));
+              } catch {
+                // ignore
+              }
+              return merged;
+            });
+          }
+        }
+
+        sound.playCandleChime();
+        setExportNotice(`Sacred backup imported successfully (${restoredCount} new tributes)!`);
+        setTimeout(() => setExportNotice(null), 4000);
+      } catch {
+        setExportNotice("Invalid backup JSON file format.");
+        setTimeout(() => setExportNotice(null), 4000);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  };
+
   return (
     <div className="relative w-full max-w-6xl mx-auto rounded-2xl border border-amber-900/60 bg-gradient-to-b from-[#140c06] via-[#0d0907] to-[#080504] shadow-2xl overflow-hidden backdrop-blur-xl">
       {/* Floating Canvas Petals Layer */}
@@ -706,6 +792,41 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
         {/* TAB 2: FAMILY & PERSONAL TRIBUTES */}
         {activeTab === "family" && (
           <div className="space-y-6">
+            {/* Airgapped USB Backup & Restore Sovereignty Bar */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 rounded-xl bg-amber-950/20 border border-amber-900/40 text-xs font-mono">
+              <div className="flex items-center gap-2 text-amber-300">
+                <FileJson className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>
+                  <strong>Airgapped Data Sovereignty:</strong> Export & restore sacred memories on private USB storage.
+                </span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={handleExportBackup}
+                  className="px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  title="Export offline JSON backup of all family tributes and candles"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Backup (JSON)</span>
+                </button>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-3 py-1.5 rounded-lg border border-orange-500/40 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  title="Restore tributes and candles from JSON backup"
+                >
+                  <Upload className="w-3.5 h-3.5" />
+                  <span>Restore</span>
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json,application/json"
+                  onChange={handleImportFileSelect}
+                  className="hidden"
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {filteredFamily.map((t) => (
                 <div
