@@ -90,6 +90,9 @@ Ghost in the Machine synthesizes ethereal vocal presence and seasonal atmospheri
 1. **Dual-Formant Vocal Whisper Resonance**: Dual parallel Biquad bandpass filters centered around human speech vowel formants (\( F_1 \approx 650\,\text{Hz} \), \( F_2 \approx 1350\,\text{Hz} \)) with high \( Q \)-factors (\( Q_1 = 6.0, Q_2 = 7.0 \)) driven by shaped white noise:
    $$W(t) = \left[\text{BPF}_{650, 6}(N(t)) + \text{BPF}_{1350, 7}(N(t))\right] \cdot g_{\text{whisper}}(t)$$
 2. **Procedural Pink-Noise Wind Turbulence**: Approximated via a 3-pole IIR filter cascading white noise through fractional poles (\( 0.099, 0.296, 1.052 \)) and swept across a dynamic bandpass frequency (\( 260\,\text{Hz} \to 680\,\text{Hz} \to 220\,\text{Hz} \)) to simulate fluctuating midnight air currents.
+3. **Continuous Autumnal Wind Soundscape**: A continuous 5-second seamless looped pink-noise buffer passing through a bandpass filter (\( Q = 2.4 \)) dynamically swept by a low-frequency oscillator:
+   $$f_c(t) = 320 + 180 \cdot \sin(2\pi \cdot 0.18 \cdot t)\,\text{Hz}$$
+   The resulting audio mimics nocturnal wind whistling gently through marigold petals and cemetery gates with zero asset footprint.
 
 ---
 
@@ -146,6 +149,8 @@ User Input Query
 | `ghost_family_tributes` | `localStorage` | Custom ancestral memorials, relationships, and Calaveritas | Persistent |
 | `ghost_candles` | `localStorage` | Aggregated community and personal vigil candle count | Persistent |
 | `ghost_volume` | `localStorage` | Web Audio synthesizer master volume preference | Persistent |
+| `ofrenda_backup.json` | Airgapped File Blob | Portable JSON export/restore of family tributes & candles | User-Controlled |
+| `manifest.json` | Web App Manifest | Standalone PWA installation across mobile & desktop | Installed OS Cache |
 
 All keys can be completely purged at any time using the ErrorBoundary "Purge Cache & Reset" action or browser clear data.
 
@@ -193,6 +198,7 @@ The application implements a dedicated keyboard router in `App.tsx` mapped to th
 | <kbd>T</kbd> | `theme` cycle: `cempasuchil` $\to$ `spectral` $\to$ `bloodmoon` $\to$ `cempasuchil` | 528Hz, 440Hz, or 220Hz harmonic confirmation tone |
 | <kbd>M</kbd> | Toggle `isMuted` clamped to `0.0` gain | Smooth linear gain ramp |
 | <kbd>D</kbd> | Toggle `isAmbientDroneOn` (55Hz sub-bass + 0.12Hz LFO) | Exponential filter crossfade |
+| <kbd>W</kbd> | Toggle `isAmbientWindOn` (Continuous pink-noise autumnal breeze) | LFO swept bandpass filter fade |
 | <kbd>C</kbd> | Toggle `ghostCursorEnabled` (Canvas particle physics reticle) | Instant reticle engage/disengage |
 | <kbd>H</kbd> | Toggle `showGuideModal` (English Royal Farman Scroll) | Solfeggio 528Hz bell chime |
 | <kbd>?</kbd> | Toggle `showShortcutsModal` (Quick keyboard reference cheatsheet) | Keyboard UI focus |

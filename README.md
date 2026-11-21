@@ -85,6 +85,7 @@ Operate the entire paranormal station without touching your mouse:
 | <kbd>4</kbd> | **Open Innovation Manifesto** | View the architectural manifesto on open-source AI sovereignty |
 | <kbd>M</kbd> | **Toggle Audio Mute** | Instantly silence or restore all procedural Web Audio soundscapes |
 | <kbd>D</kbd> | **Toggle Nocturnal Drone** | Enable/disable the 55Hz sub-bass ambient atmospheric drone |
+| <kbd>W</kbd> | **Toggle Autumn Wind** | Enable/disable the continuous procedural pink-noise wind soundscape |
 | <kbd>C</kbd> | **Toggle Ghost Cursor** | Enable/disable custom ghost pointer & ectoplasm particle physics |
 | <kbd>T</kbd> | **Cycle Theme Palette** | Rotate between Cempasúchil Gold, Spectral Green & Bloodmoon Crimson |
 | <kbd>H</kbd> | **Beginner's Manual** | Open the interactive Apprentice Grimoire with example commands |
@@ -120,6 +121,9 @@ Operate the entire paranormal station without touching your mouse:
 | **Memorial Card Exporter** | High-resolution 1000×650 Canvas 2D engine drawing Mexican double borders and gold flourishes. | Formats and prints ancestral cards directly to downloadable PNGs. |
 | **Phantom Investigator** | 60fps radial radar canvas, simultaneous 18.98Hz / 7.83Hz oscilloscope, IoT telemetry stream simulator. | Parses multi-modal sensory anomalies into investigative paranormal dossiers. |
 | **Multi-Format Exporter** | Formatted text, structured JSON, and tabular CSV serializers via ephemeral blob URLs. | Packages raw telemetry data for external research and reproducibility. |
+| **Airgapped USB JSON Backup** | Client-side JSON serializer and validator for complete memorial sanctuary portability. | Preserves sacred ancestral memories to private flash drives without cloud dependence. |
+| **PWA Standalone App** | W3C Web App Manifest with full offline standalone display and mobile capability meta tags. | Ensures the sanctuary runs completely disconnected from the grid as an installed app. |
+| **Continuous Wind Soundscape** | Procedural pink-noise DSP modulated by dual slow LFOs for organic autumn breeze whistling. | Zero-asset (0 KB download) Web Audio API synthesis reacting to ambient sanctuary state. |
 | **Local Ollama Daemon Bridge** | Local HTTP gateway connecting seamlessly to `http://localhost:11434`. | Runs user-owned models (Llama 3.2, Mistral, SmolLM, Gemma) on consumer GPUs. |
 | **Enterprise Security & Boundary** | Strict CSP, COOP/COEP isolation, HSTS preload, and CRT ErrorBoundary kernel panic recovery. | Eliminates XSS, timing attacks, data exfiltration, and cascading React crashes. |
 
