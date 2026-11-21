@@ -8,6 +8,7 @@ import {
   VolumeX,
   Sparkles,
   Waves,
+  Wind,
   Palette,
   Keyboard,
   X,
@@ -34,6 +35,7 @@ export default function App() {
   const [isMuted, setIsMuted] = useState(sound.getMuted());
   const [volume, setVolume] = useState<number>(sound.getVolume());
   const [isDroneOn, setIsDroneOn] = useState<boolean>(sound.isDroneActive());
+  const [isWindOn, setIsWindOn] = useState<boolean>(sound.isWindActive());
   const [audioActivity, setAudioActivity] = useState<number>(0);
   const [showShortcutsModal, setShowShortcutsModal] = useState<boolean>(false);
   const [showGuideModal, setShowGuideModal] = useState<boolean>(false);
@@ -89,6 +91,8 @@ export default function App() {
         handleToggleSound();
       } else if (e.key === "d" || e.key === "D") {
         handleToggleDrone();
+      } else if (e.key === "w" || e.key === "W") {
+        handleToggleWind();
       } else if (e.key === "c" || e.key === "C") {
         handleToggleGhostCursor();
       } else if (e.key === "t" || e.key === "T") {
@@ -106,7 +110,7 @@ export default function App() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isMuted, isDroneOn, ghostCursorEnabled, theme]);
+  }, [isMuted, isDroneOn, isWindOn, ghostCursorEnabled, theme]);
 
   const handleTabChange = (tab: "terminal" | "ofrenda" | "investigator" | "manifesto") => {
     setActiveTab(tab);
@@ -144,6 +148,11 @@ export default function App() {
   const handleToggleDrone = () => {
     const active = sound.toggleAmbientDrone();
     setIsDroneOn(active);
+  };
+
+  const handleToggleWind = () => {
+    const active = sound.toggleAmbientWind();
+    setIsWindOn(active);
   };
 
   const handleToggleGhostCursor = () => {
@@ -307,6 +316,18 @@ export default function App() {
                 aria-label="Toggle Séance Ambient Drone"
               >
                 <Waves className={`w-3 h-3 ${isDroneOn ? "animate-pulse" : ""}`} />
+              </button>
+
+              {/* Autumn Wind button embedded in audio capsule */}
+              <button
+                onClick={handleToggleWind}
+                title={isWindOn ? "Autumn Wind: ON (W)" : "Autumn Wind: OFF (W)"}
+                className={`p-1 rounded-full transition-colors cursor-pointer ${
+                  isWindOn ? "text-amber-300 bg-amber-500/20" : "text-zinc-500 hover:text-zinc-300"
+                }`}
+                aria-label="Toggle Autumn Wind Soundscape"
+              >
+                <Wind className={`w-3 h-3 ${isWindOn ? "animate-pulse" : ""}`} />
               </button>
 
               {/* Compact Volume slider on xl screens */}
@@ -527,6 +548,18 @@ export default function App() {
               </button>
 
               <button
+                onClick={handleToggleWind}
+                className={`px-3 py-1.5 rounded-lg border flex items-center gap-1.5 font-mono cursor-pointer ${
+                  isWindOn
+                    ? "border-amber-500/70 bg-amber-500/20 text-amber-300"
+                    : "border-zinc-800 bg-zinc-900 text-zinc-400"
+                }`}
+              >
+                <Wind className={`w-3.5 h-3.5 ${isWindOn ? "animate-pulse" : ""}`} />
+                <span>Wind: {isWindOn ? "ON" : "OFF"}</span>
+              </button>
+
+              <button
                 onClick={() => {
                   setShowShortcutsModal(true);
                   setMobileMenuOpen(false);
@@ -642,6 +675,10 @@ export default function App() {
               <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
                 <span className="text-zinc-300">Toggle Ambient Drone</span>
                 <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">D</kbd>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
+                <span className="text-zinc-300">Toggle Autumn Wind</span>
+                <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">W</kbd>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
                 <span className="text-zinc-300">Toggle Ghost Pointer</span>

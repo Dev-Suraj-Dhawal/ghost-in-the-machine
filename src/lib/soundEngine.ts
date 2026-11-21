@@ -17,6 +17,14 @@ class SoundEngine {
   private droneLfo: OscillatorNode | null = null;
   private droneGain: GainNode | null = null;
 
+  // Continuous Ambient Wind soundscape nodes
+  private isAmbientWindOn: boolean = false;
+  private windSource: AudioBufferSourceNode | null = null;
+  private windFilter: BiquadFilterNode | null = null;
+  private windGain: GainNode | null = null;
+  private windLfo: OscillatorNode | null = null;
+  private windLfoGain: GainNode | null = null;
+
   // Activity & volume listeners for UI visualizers
   private listeners: Set<AudioActivityListener> = new Set();
   private volumeListeners: Set<VolumeChangeListener> = new Set();
@@ -73,6 +81,9 @@ class SoundEngine {
     }
     if (muted && this.isAmbientDroneOn) {
       this.stopAmbientDrone();
+    }
+    if (muted && this.isAmbientWindOn) {
+      this.stopAmbientWind();
     }
     this.notifyVolume();
   }
@@ -190,6 +201,110 @@ class SoundEngine {
       }
     } else {
       this.isAmbientDroneOn = false;
+    }
+  }
+
+  public toggleAmbientWind(): boolean {
+    if (this.isAmbientWindOn) {
+      this.stopAmbientWind();
+      return false;
+    } else {
+      this.startAmbientWind();
+      return true;
+    }
+  }
+
+  public isWindActive(): boolean {
+    return this.isAmbientWindOn;
+  }
+
+  public startAmbientWind() {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx || !this.masterGain || this.isAmbientWindOn) return;
+
+    try {
+      const now = this.ctx.currentTime;
+      // 5-second procedural pink-noise loop
+      const bufferSize = Math.floor(this.ctx.sampleRate * 5);
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+
+      let b0 = 0, b1 = 0, b2 = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        b0 = 0.99765 * b0 + white * 0.0990460;
+        b1 = 0.96300 * b1 + white * 0.2965164;
+        b2 = 0.57000 * b2 + white * 1.0526913;
+        data[i] = (b0 + b1 + b2 + white * 0.1848) * 0.08;
+      }
+
+      const source = this.ctx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      // Bandpass filter modulated by gentle nocturnal LFO
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(320, now);
+      filter.Q.setValueAtTime(2.4, now);
+
+      const lfo = this.ctx.createOscillator();
+      const lfoGain = this.ctx.createGain();
+      lfo.frequency.setValueAtTime(0.18, now);
+      lfoGain.gain.setValueAtTime(180, now);
+      lfo.connect(filter.frequency);
+
+      const windGain = this.ctx.createGain();
+      windGain.gain.setValueAtTime(0.0001, now);
+      windGain.gain.exponentialRampToValueAtTime(0.05, now + 1.2);
+
+      source.connect(filter);
+      filter.connect(windGain);
+      windGain.connect(this.masterGain);
+
+      source.start(now);
+      lfo.start(now);
+
+      this.windSource = source;
+      this.windFilter = filter;
+      this.windLfo = lfo;
+      this.windLfoGain = lfoGain;
+      this.windGain = windGain;
+      this.isAmbientWindOn = true;
+    } catch {
+      // AudioContext policy suppression
+    }
+  }
+
+  public stopAmbientWind() {
+    if (this.ctx && this.windGain && this.isAmbientWindOn) {
+      try {
+        const now = this.ctx.currentTime;
+        this.windGain.gain.setValueAtTime(this.windGain.gain.value, now);
+        this.windGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
+
+        setTimeout(() => {
+          this.windSource?.stop();
+          this.windLfo?.stop();
+          this.windSource?.disconnect();
+          this.windLfo?.disconnect();
+          this.windLfoGain?.disconnect();
+          this.windFilter?.disconnect();
+          this.windGain?.disconnect();
+
+          this.windSource = null;
+          this.windLfo = null;
+          this.windLfoGain = null;
+          this.windFilter = null;
+          this.windGain = null;
+          this.isAmbientWindOn = false;
+        }, 900);
+      } catch {
+        this.isAmbientWindOn = false;
+      }
+    } else {
+      this.isAmbientWindOn = false;
     }
   }
 
