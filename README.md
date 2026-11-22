@@ -121,6 +121,9 @@ Operate the entire paranormal station without touching your mouse:
 | **Memorial Card Exporter** | High-resolution 1000×650 Canvas 2D engine drawing Mexican double borders and gold flourishes. | Formats and prints ancestral cards directly to downloadable PNGs. |
 | **Phantom Investigator** | 60fps radial radar canvas, simultaneous 18.98Hz / 7.83Hz oscilloscope, IoT telemetry stream simulator. | Parses multi-modal sensory anomalies into investigative paranormal dossiers. |
 | **Multi-Format Exporter** | Formatted text, structured JSON, and tabular CSV serializers via ephemeral blob URLs. | Packages raw telemetry data for external research and reproducibility. |
+| **Spectral Process Monitor (`necrostat`)** | ASCII system dashboard tracking soul PIDs, VRAM allocation, and 100% airgap verification. | Visualizes computing pioneer processes running strictly in local client memory. |
+| **Bilingual Bond Filter** | Interactive category chips for Grandparents, Parents, Mentors, Friends, and Pets. | Enables immediate targeted commemoration supporting English and Spanish folklore terms. |
+| **Acoustic Geiger Synthesizer** | Poisson-distributed high-frequency square wave audio bursts for Level 4 anomaly events. | Immediate procedural auditory feedback for critical midnight sensor breaches. |
 | **Airgapped USB JSON Backup** | Client-side JSON serializer and validator for complete memorial sanctuary portability. | Preserves sacred ancestral memories to private flash drives without cloud dependence. |
 | **PWA Standalone App** | W3C Web App Manifest with full offline standalone display and mobile capability meta tags. | Ensures the sanctuary runs completely disconnected from the grid as an installed app. |
 | **Continuous Wind Soundscape** | Procedural pink-noise DSP modulated by dual slow LFOs for organic autumn breeze whistling. | Zero-asset (0 KB download) Web Audio API synthesis reacting to ambient sanctuary state. |

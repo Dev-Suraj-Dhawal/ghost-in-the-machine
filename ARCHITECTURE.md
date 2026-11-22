@@ -94,6 +94,12 @@ Ghost in the Machine synthesizes ethereal vocal presence and seasonal atmospheri
    $$f_c(t) = 320 + 180 \cdot \sin(2\pi \cdot 0.18 \cdot t)\,\text{Hz}$$
    The resulting audio mimics nocturnal wind whistling gently through marigold petals and cemetery gates with zero asset footprint.
 
+### 2.6 Poisson Acoustic Geiger Burst DSP
+
+For critical electromagnetic and thermal anomalies in `PhantomInvestigator`, the engine synthesizes an acoustic ionizing Geiger burst without samples:
+$$G_k(t) = \text{rect}\left(\frac{t - t_k}{\tau}\right) \cdot \text{sgn}\left[\sin(2\pi \cdot f_k \cdot t)\right] \cdot e^{-(t - t_k)/\sigma}$$
+Where click duration \( \tau = 12\,\text{ms} \), carrier frequencies \( f_k \sim \mathcal{U}(1600, 2800)\,\text{Hz} \), and click onset times follow a pseudo-Poisson jitter \( t_k = t_0 + k \cdot \Delta t + \epsilon_k \).
+
 ---
 
 ## 3. High-Resolution Canvas Rendering & Physics
@@ -112,6 +118,10 @@ When exporting family memorials, `LivingOfrenda.tsx` renders a high-resolution 1
 - Intricate Mexican double borders with corner flourish accents.
 - Typographic hierarchy formatting the deceased name, relationship, lifespan dates, and bilingual Calaverita or eulogy.
 - Direct binary export via `canvas.toDataURL("image/png")` triggering instant client-side download without server mediation.
+
+### 3.3 Bilingual Bond Classification & Memorial Filtering
+
+The Living Ofrenda provides multi-lingual regex and keyword classification partitioning family tributes into distinct bonds (`Grandparents`, `Parents`, `Mentors`, `Friends & Siblings`, `Pets & Companions`) across both English and Mexican Spanish roots (`abuel*`, `madre/padre`, `maestr*`, `amig*/herman*`, `mascota`).
 
 ---
 

@@ -72,6 +72,13 @@ const DECREE_COMMANDS: DecreeCommand[] = [
     astralConsequence: "Accompanied by autumnal pink-noise wind synthesis.",
   },
   {
+    command: "necrostat",
+    title: "Inspect Cursed Processes & Soul PIDs",
+    category: "Diagnostics",
+    decreeDetail: "Launches the ASCII spectral process monitor tracking core 0 load, memory allocation, and pioneer PIDs.",
+    astralConsequence: "Plays radar ping resonance and displays live system health with 100% airgap verification.",
+  },
+  {
     command: "whisper Why did you invent the first algorithm?",
     title: "Commune Directly with the Spirit",
     category: "Dialogue",
