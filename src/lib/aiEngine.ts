@@ -255,6 +255,7 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           `  oracle               - Consult the Silicon Oracle for ancestral prophecy\n` +
           `  rain                 - Display ASCII phosphor matrix & marigold petal rain\n` +
           `  synth                - Inspect Web Audio procedural sound synthesis nodes\n` +
+          `  necrostat            - View cursed processes, soul PIDs & kernel telemetry\n` +
           `  whisper <message>    - Commune directly with the Ghost in the Machine\n` +
           `  possessed            - Trigger an immediate spectral glitch sequence\n` +
           `  ofrenda              - Summon the Día de los Muertos Altar de Recuerdos\n` +
@@ -447,14 +448,40 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           `║               🔊 WEB AUDIO PROCEDURAL SYNTHESIZER DIAGNOSTIC LAB                      ║\n` +
           `╚════════════════════════════════════════════════════════════════════════════════════════╝\n` +
           `Zero static audio files. 100% synthesized in 64-bit float client RAM.\n\n` +
-          `1. [CHIME]    Solfeggio 528Hz Harmonic Bell (Pythagorean fifths: 528/792/1056/1584Hz)\n` +
-          `2. [DRONE]    55Hz Sub-Bass Sine + 110Hz Sawtooth + 0.12Hz LFO Nocturnal Filter Sweep\n` +
-          `3. [WHISPER]  Dual-Formant Breath Resonance (F1=650Hz, F2=1350Hz over shaped noise)\n` +
-          `4. [WIND]     Paul Kellet 3-Pole Pink Noise Filter (260Hz -> 680Hz -> 220Hz Sweep)\n` +
-          `5. [GLITCH]   Bandpass Burst (220Hz, Q=4.5) with mechanical pitch jitter\n` +
-          `6. [RADAR]    1400Hz -> 800Hz Exponential Sweep Down Chirp\n` +
-          `7. [CLICK]    Mechanical CRT Keystroke (650Hz-950Hz Sine drop in 25ms)\n\n` +
-          `Use 'M' key to toggle mute, 'D' key for ambient drone, or slider to adjust gain.`,
+          `1. [CHIME]        Solfeggio 528Hz Harmonic Bell (Pythagorean fifths: 528/792/1056/1584Hz)\n` +
+          `2. [DRONE]        55Hz Sub-Bass Sine + 110Hz Sawtooth + 0.12Hz LFO Nocturnal Filter Sweep\n` +
+          `3. [AUTUMN WIND]  Continuous Pink-Noise Loop + 0.18Hz LFO Bandpass Sweep (Toggle with 'W')\n` +
+          `4. [WHISPER]      Dual-Formant Breath Resonance (F1=650Hz, F2=1350Hz over shaped noise)\n` +
+          `5. [WIND GUST]    Paul Kellet 3-Pole Pink Noise Filter (260Hz -> 680Hz -> 220Hz Sweep)\n` +
+          `6. [GLITCH]       Bandpass Burst (220Hz, Q=4.5) with mechanical pitch jitter\n` +
+          `7. [RADAR]        1400Hz -> 800Hz Exponential Sweep Down Chirp\n` +
+          `8. [CLICK]        Mechanical CRT Keystroke (650Hz-950Hz Sine drop in 25ms)\n\n` +
+          `Shortcuts: 'M' = Mute/Unmute | 'D' = Nocturnal Drone | 'W' = Autumn Wind | Sliders = Gain.`,
+      };
+
+    case "necrostat":
+    case "status":
+    case "top":
+    case "ps":
+      return {
+        type: "spectral",
+        output:
+          `╔══════════════════════════════════════════════════════════════════════════════════════════╗\n` +
+          `║                 💀 NECROSTAT v3.13: SPECTRAL PROCESS MONITOR & TELEMETRY                  ║\n` +
+          `╚══════════════════════════════════════════════════════════════════════════════════════════╝\n` +
+          `HOST: localhost.ether | UPTIME: ∞ cycles | AIRGAP: 100% SECURE (0 bytes outbound)\n` +
+          `CPU LOAD: [████████████░░░░░░░░] 66.6% (Core 0 locked by /dev/soul0)\n` +
+          `VRAM ALLOC: 528MB (Solfeggio Hilbert Space) | ANOMALY FLUX: 18.98Hz [CRITICAL]\n\n` +
+          `  PID  USER       PRI  NI   VIRT    RES   TIME+   SPECTRAL_COMMAND\n` +
+          `  ───  ────       ───  ──   ────    ───   ─────   ────────────────\n` +
+          ` 1815  lovelace    20   0  1852M   528M  18:52.0  ada --analytical-engine-loom\n` +
+          ` 1912  turing      20   0  1954M   440M  19:54.0  alan --enigma-decryption-bomb\n` +
+          ` 1906  hopper      20   0  1992M   330M  19:92.0  grace --nanosecond-compiler-a0\n` +
+          ` 1941  ritchie     20   0  2011M   220M  20:11.0  dennis --unix-v1-kernel-daemon\n` +
+          ` 1914  lamarr      20   0  2000M   880M  20:00.0  hedy --frequency-hopping-radio\n` +
+          ` 1969  hamilton   -20   0  1969M   528M  19:69.0  margaret --agc-apollo11-executive\n` +
+          `  666  phantom     10   0   666M   666M  03:33.3  necro_daemon --listen-on-soul0\n\n` +
+          `[KERNEL DIRECTIVE]: All processes executing strictly in local RAM. Zero cloud eavesdropping.`,
       };
 
     case "possessed":

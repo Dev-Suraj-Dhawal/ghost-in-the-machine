@@ -258,6 +258,9 @@ export default function NecroShell({
       sound.playSpectralTone(528, 0.5);
     } else if (action === "pioneers") {
       sound.playSpectralTone(440, 0.3);
+    } else if (action === "necrostat" || action === "top" || action === "status" || action === "ps") {
+      sound.playRadarPing();
+      sound.playSpectralTone(220, 0.4);
     }
 
     // Standard possessed command parser
