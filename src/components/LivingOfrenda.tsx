@@ -17,6 +17,7 @@ import {
   Upload,
   FileJson,
   CheckCircle,
+  Filter,
 } from "lucide-react";
 import { DEPARTED_PIONEERS, generateCalaverita, generateSacredEulogy } from "@/lib/aiEngine";
 import { DepartedPioneer, RemembranceTribute, LitCandle } from "@/lib/types";
@@ -81,6 +82,7 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
   const [activeTab, setActiveTab] = useState<"pioneers" | "family" | "create">("pioneers");
   const [selectedPioneer, setSelectedPioneer] = useState<DepartedPioneer | null>(DEPARTED_PIONEERS[0]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [relationshipFilter, setRelationshipFilter] = useState<string>("all");
   const [isExportingCard, setIsExportingCard] = useState(false);
   const [exportNotice, setExportNotice] = useState<string | null>(null);
 
@@ -432,12 +434,52 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
       p.legacy.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredFamily = customTributes.filter(
-    (t) =>
+  const RELATIONSHIP_CATEGORIES = [
+    { id: "all", label: "All Tributes" },
+    { id: "grand", label: "Grandparents" },
+    { id: "parent", label: "Parents" },
+    { id: "mentor", label: "Mentors" },
+    { id: "friend", label: "Friends & Siblings" },
+    { id: "pet", label: "Pets & Companions" },
+  ];
+
+  const matchesCategory = (t: RemembranceTribute, catId: string) => {
+    if (catId === "all") return true;
+    const rel = (t.relationship || "").toLowerCase();
+    if (catId === "grand") return rel.includes("grand") || rel.includes("abuel");
+    if (catId === "parent")
+      return (
+        rel.includes("parent") ||
+        rel.includes("mother") ||
+        rel.includes("father") ||
+        rel.includes("madre") ||
+        rel.includes("padre") ||
+        rel.includes("mamá") ||
+        rel.includes("papá")
+      );
+    if (catId === "mentor")
+      return rel.includes("mentor") || rel.includes("teacher") || rel.includes("guide") || rel.includes("maestr");
+    if (catId === "friend")
+      return (
+        rel.includes("friend") ||
+        rel.includes("sibling") ||
+        rel.includes("brother") ||
+        rel.includes("sister") ||
+        rel.includes("amig") ||
+        rel.includes("herman")
+      );
+    if (catId === "pet") return rel.includes("pet") || rel.includes("dog") || rel.includes("cat") || rel.includes("mascota");
+    return rel.includes(catId);
+  };
+
+  const filteredFamily = customTributes.filter((t) => {
+    const matchesQuery =
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.relationship.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.cherishedMemory.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      t.cherishedMemory.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!matchesQuery) return false;
+    return matchesCategory(t, relationshipFilter);
+  });
 
   const handleExportBackup = () => {
     try {
@@ -825,6 +867,41 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
                   className="hidden"
                 />
               </div>
+            </div>
+
+            {/* Relationship Category Filter Pills */}
+            <div className="flex items-center gap-1.5 flex-wrap text-xs font-mono">
+              <span className="text-[11px] text-zinc-500 uppercase tracking-wider mr-1 flex items-center gap-1">
+                <Filter className="w-3 h-3 text-amber-500/70" />
+                <span>Filter by Bond:</span>
+              </span>
+              {RELATIONSHIP_CATEGORIES.map((cat) => {
+                const count = customTributes.filter((t) => matchesCategory(t, cat.id)).length;
+                const isSelected = relationshipFilter === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => {
+                      setRelationshipFilter(cat.id);
+                      sound.playKeyClick();
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+                      isSelected
+                        ? "bg-amber-500/20 border border-amber-500/60 text-amber-300 font-bold shadow-sm"
+                        : "bg-zinc-900/60 border border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
+                    }`}
+                  >
+                    <span>{cat.label}</span>
+                    <span
+                      className={`text-[10px] px-1 py-0.2 rounded-full ${
+                        isSelected ? "bg-amber-500/30 text-amber-200" : "bg-zinc-800 text-zinc-500"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
