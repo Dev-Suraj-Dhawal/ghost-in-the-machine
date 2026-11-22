@@ -243,7 +243,11 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
       };
 
       setLogs((prev) => [newLog, ...prev.slice(0, 18)]);
-      sound.playGeigerClick();
+      if (randomAnomaly.anomalyScore >= 9) {
+        sound.playGeigerBurst(3);
+      } else {
+        sound.playGeigerClick();
+      }
     }, 9000);
 
     return () => clearInterval(interval);
@@ -251,6 +255,7 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
 
   const handleTriggerAnomalousBurst = () => {
     sound.playRadarPing();
+    sound.playGeigerBurst(5);
     sound.playSpectralTone(189.8, 0.9);
     sound.playSeanceWhisper(1.2);
     const now = new Date();
@@ -353,6 +358,9 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
   };
 
   const filteredLogs = logs.filter((l) => (selectedFilter === "all" ? true : l.eventType === selectedFilter));
+  const criticalCount = logs.filter((l) => l.anomalyScore >= 10).length;
+  const highCount = logs.filter((l) => l.anomalyScore >= 8 && l.anomalyScore < 10).length;
+  const normalCount = logs.filter((l) => l.anomalyScore < 8).length;
 
   return (
     <div className="relative w-full max-w-5xl mx-auto rounded-2xl border border-zinc-800 bg-zinc-950/90 shadow-2xl overflow-hidden backdrop-blur-xl p-6 sm:p-8">
@@ -412,6 +420,34 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
       {/* Radar & EMF Infrasound Oscilloscope Canvas Bar */}
       <div className="mt-6 p-3 rounded-2xl border border-red-900/30 bg-black/60 relative overflow-hidden">
         <canvas ref={canvasRef} width={900} height={140} className="w-full h-28 sm:h-32 rounded-xl block" />
+      </div>
+
+      {/* Sensor Threat Level & Severity Distribution */}
+      <div className="mt-4 p-3 rounded-xl bg-zinc-950/80 border border-zinc-800/80 flex items-center justify-between flex-wrap gap-3 text-xs font-mono">
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+          <span className="text-zinc-300">
+            <strong>Spectral Threat Index:</strong>{" "}
+            {criticalCount > 0 ? (
+              <span className="text-red-400 font-bold">LEVEL 4 - CRITICAL ANOMALY</span>
+            ) : highCount > 0 ? (
+              <span className="text-amber-400 font-bold">LEVEL 3 - ELEVATED ANOMALY</span>
+            ) : (
+              <span className="text-emerald-400 font-bold">LEVEL 1 - NOMINAL</span>
+            )}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 text-[11px]">
+          <span className="px-2 py-0.5 rounded bg-red-950/80 border border-red-500/40 text-red-300">
+            {criticalCount} Critical (Score 10)
+          </span>
+          <span className="px-2 py-0.5 rounded bg-amber-950/80 border border-amber-500/40 text-amber-300">
+            {highCount} High (Score 8–9)
+          </span>
+          <span className="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-zinc-400">
+            {normalCount} Moderate
+          </span>
+        </div>
       </div>
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">

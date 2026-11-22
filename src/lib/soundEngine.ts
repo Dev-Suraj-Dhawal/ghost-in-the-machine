@@ -496,6 +496,36 @@ class SoundEngine {
     }
   }
 
+  public playGeigerBurst(count: number = 4) {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx || !this.masterGain) return;
+
+    try {
+      const baseTime = this.ctx.currentTime;
+      for (let i = 0; i < count; i++) {
+        const clickTime = baseTime + i * 0.04 + Math.random() * 0.035;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = "square";
+        osc.frequency.setValueAtTime(1600 + Math.random() * 1200, clickTime);
+
+        gain.gain.setValueAtTime(0.08, clickTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.012);
+
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+
+        osc.start(clickTime);
+        osc.stop(clickTime + 0.012);
+      }
+      this.notifyActivity(0.9);
+    } catch {
+      // ignore
+    }
+  }
+
   public playEtherealWind(duration: number = 1.2) {
     if (this.isMuted) return;
     this.initContext();
