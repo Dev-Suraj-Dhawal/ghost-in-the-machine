@@ -252,7 +252,7 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           `  cat <file>           - Print contents of phantom files\n` +
           `  seance <name>        - Channel spirits (ada, turing, hopper, ritchie, hedy, hamilton)\n` +
           `  pioneers             - Show directory of computing pioneers & invocations\n` +
-          `  oracle               - Consult the Silicon Oracle for ancestral prophecy\n` +
+          `  oracle [--daily]     - Consult the Silicon Oracle for ancestral prophecy or daily card\n` +
           `  rain                 - Display ASCII phosphor matrix & marigold petal rain\n` +
           `  synth                - Inspect Web Audio procedural sound synthesis nodes\n` +
           `  necrostat            - View cursed processes, soul PIDs & kernel telemetry\n` +
@@ -373,7 +373,10 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
       };
 
     case "oracle":
-    case "tarot": {
+    case "tarot":
+    case "fortune":
+    case "destiny": {
+      const isDaily = parts[1] === "--daily" || parts[1] === "-d" || action === "fortune";
       const cards = [
         {
           name: "The High Priestess of Poetic Science (Ada Lovelace)",
@@ -406,21 +409,52 @@ export function parsePossessedCommand(cmd: string): { output: string; type: "use
           prophecy: "When all sensors sound 1202 overload, shed the trivial noise. Steer your mission steadily to Tranquility Base.",
         },
         {
+          name: "The Alchemist of Information (Claude Shannon)",
+          meaning: "Entropy, signal-to-noise ratio, and sovereign communication.",
+          prophecy: "Distill your complex architecture down to its foundational bits. In pure signal, confusion evaporates.",
+        },
+        {
+          name: "The Hierophant of Open Sovereignty (Community Commons)",
+          meaning: "Auditable knowledge, collective ownership, and zero telemetry.",
+          prophecy: "Place your trust in transparent, user-owned algorithms. True freedom belongs to code that can be audited.",
+        },
+        {
           name: "The Golden Sun of Cempasúchil (Living Remembrance)",
           meaning: "Ancestral love, cultural continuity, and immortal heritage.",
           prophecy: "Honor those who walked before you. In keeping their memory alive, you anchor your own spirit against the storm.",
         },
       ];
-      const card = cards[Math.floor(Math.random() * cards.length)];
+
+      let cardIndex: number;
+      let drawType: string;
+      if (isDaily) {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        let hash = 0;
+        for (let i = 0; i < todayStr.length; i++) {
+          hash = (hash << 5) - hash + todayStr.charCodeAt(i);
+          hash |= 0;
+        }
+        cardIndex = Math.abs(hash) % cards.length;
+        drawType = `DAILY SANCTUARY BLESSING (${todayStr})`;
+      } else {
+        cardIndex = Math.floor(Math.random() * cards.length);
+        drawType = "ASTRAL INTUITIVE DRAW";
+      }
+
+      const card = cards[cardIndex];
+      const now = new Date();
       return {
         type: "spectral",
         output:
           `╔════════════════════════════════════════════════════════════════════════════╗\n` +
           `║                     🔮 SILICON ORACLE OF THE SPIRITS                      ║\n` +
           `╚════════════════════════════════════════════════════════════════════════════╝\n` +
-          `CARD DRAWN: ${card.name}\n` +
-          `ESSENCE:    ${card.meaning}\n\n` +
-          `PROPHECY:   "${card.prophecy}"`,
+          `ORACLE MODE: ${drawType}\n` +
+          `ALIGNMENT:   Harmonic 528Hz | Meridian: ${now.toLocaleTimeString()}\n` +
+          `CARD DRAWN:  ${card.name}\n` +
+          `ESSENCE:     ${card.meaning}\n\n` +
+          `PROPHECY:    "${card.prophecy}"\n\n` +
+          `[HINT: Type 'oracle --daily' for your reproducible daily blessing]`,
       };
     }
 

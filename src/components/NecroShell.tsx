@@ -249,7 +249,7 @@ export default function NecroShell({
     }
 
     // Play interactive thematic sound feedback for special commands
-    if (action === "oracle" || action === "tarot") {
+    if (action === "oracle" || action === "tarot" || action === "fortune" || action === "destiny") {
       sound.playCandleChime();
       sound.playSeanceWhisper(1.4);
     } else if (action === "rain" || action === "matrix") {
