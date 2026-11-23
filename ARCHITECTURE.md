@@ -149,6 +149,14 @@ User Input Query
 1. **In-Browser Deterministic Engine**: Built-in deterministic tokenizer with persona-specific vocabulary trees for Ada Lovelace, Alan Turing, Grace Hopper, Dennis Ritchie, and Hedy Lamarr.
 2. **Local Ollama Daemon Bridge**: Optional HTTP connection to `http://localhost:11434/api/generate` or `http://127.0.0.1:11434/api/generate`. Prompts and responses remain strictly on the user's localhost bus; no third-party cloud APIs are called.
 
+### 4.3 Deterministic Calendar Hash for Daily Divination
+
+The daily oracle fortune (`oracle --daily` or `fortune`) uses an offline non-cryptographic polynomial rolling hash mapping the Gregorian date string ($D = \text{"YYYY-MM-DD"}$) to a card index $k$:
+$$H(D) = \sum_{i=0}^{|D|-1} c_i \cdot 31^{|D|-1-i} \pmod{2^{32}}$$
+$$k = |H(D)| \pmod N$$
+where $N = |\text{cards}|$ and $c_i$ is the ASCII code of character $i$.
+This guarantees deterministic parity: all airgapped devices running Ghost in the Machine draw the exact same daily patron pioneer and prophecy on any given day without network sync.
+
 ---
 
 ## 5. Persistence Model
