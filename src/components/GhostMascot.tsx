@@ -65,6 +65,26 @@ const GHOST_TIPS = [
     actionLabel: "Open Radar",
     tab: "investigator" as const,
   },
+  {
+    text: "Want to see the ghosts inside your CPU? 💀 Type `necrostat` in NecroShell to inspect live soul PIDs and memory allocations!",
+    actionLabel: "Run Necrostat",
+    tab: "terminal" as const,
+  },
+  {
+    text: "Press 'W' on your keyboard to toggle the procedural autumnal wind whistling through marigold petals!",
+    actionLabel: "Try Hotkey 'W'",
+    tab: undefined,
+  },
+  {
+    text: "Preserve your heritage forever: export your entire Living Ofrenda to an airgapped JSON file for private USB backup!",
+    actionLabel: "Visit Ofrenda",
+    tab: "ofrenda" as const,
+  },
+  {
+    text: "Listen closely during Level 4 telemetry spikes—procedural acoustic Geiger bursts click whenever anomalies breach the perimeter!",
+    actionLabel: "Open Radar",
+    tab: "investigator" as const,
+  },
 ];
 
 export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMascotProps) {
@@ -78,7 +98,9 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
   const [isBlinking, setIsBlinking] = useState(false);
   const [isExcited, setIsExcited] = useState(false);
-  const [floatingParticles, setFloatingParticles] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [floatingParticles, setFloatingParticles] = useState<
+    { id: number; x: number; y: number; glyph: string }[]
+  >([]);
 
   // Theme palettes
   const colors = {
@@ -137,17 +159,21 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
 
   const handleGhostClick = () => {
     setIsExcited(true);
+    const MASCOT_TONES = [528, 440, 660, 587, 784, 880];
+    const randomTone = MASCOT_TONES[Math.floor(Math.random() * MASCOT_TONES.length)];
     try {
-      sound.playCandleChime();
+      sound.playSpectralTone(randomTone, 0.25);
     } catch {
       // ignore
     }
 
-    // Spawn floating mini sparks
+    // Spawn floating mini sparks with themed folklore glyphs
+    const GLYPHS = ["✨", "⭐", "🌼", "💀", "🎵", "🕯️"];
     const newParticles = Array.from({ length: 6 }, (_, i) => ({
       id: Date.now() + i,
       x: Math.random() * 60 - 30,
       y: -(Math.random() * 40 + 20),
+      glyph: GLYPHS[(currentTipIndex + i) % GLYPHS.length],
     }));
     setFloatingParticles(newParticles);
     setTimeout(() => setFloatingParticles([]), 1200);
@@ -189,7 +215,7 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
             right: "40px",
           }}
         >
-          ✨
+          {p.glyph}
         </span>
       ))}
 
