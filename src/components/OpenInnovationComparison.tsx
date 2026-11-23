@@ -25,8 +25,11 @@ import {
   Users,
   Award,
   Volume2,
+  Waves,
+  Wind,
 } from "lucide-react";
 import { AIInferenceConfig } from "@/lib/types";
+import { sound } from "@/lib/soundEngine";
 
 interface OpenInnovationComparisonProps {
   config: AIInferenceConfig;
@@ -51,6 +54,98 @@ export default function OpenInnovationComparison({
     status: "idle",
     message: "",
   });
+  const [lastTriggeredNode, setLastTriggeredNode] = useState<string | null>(null);
+
+  const soundboardNodes = [
+    {
+      id: "solfeggio",
+      name: "Solfeggio 528Hz Bell",
+      badge: "Pure Sine Harmonic",
+      formula: "528Hz + 792Hz Fifth with exponential λ=1.38 decay",
+      icon: Flame,
+      color: "text-amber-400",
+      bg: "bg-amber-500/10",
+      btnText: "Chime 528Hz",
+      action: () => sound.playCandleChime(),
+    },
+    {
+      id: "drone",
+      name: "55Hz Nocturnal Drone",
+      badge: "Sub-Bass Hum",
+      formula: "55Hz Low A + 110Hz Sawtooth + 0.12Hz LFO Lowpass",
+      icon: Waves,
+      color: "text-purple-400",
+      bg: "bg-purple-500/10",
+      btnText: sound.isDroneActive() ? "Stop Drone" : "Start 55Hz Drone",
+      action: () => sound.toggleAmbientDrone(),
+    },
+    {
+      id: "wind",
+      name: "Continuous Autumn Wind",
+      badge: "Pink Noise Loop",
+      formula: "Seamless 5s buffer + 0.18Hz LFO Bandpass (320Hz center)",
+      icon: Wind,
+      color: "text-cyan-400",
+      bg: "bg-cyan-500/10",
+      btnText: sound.isWindActive() ? "Stop Wind" : "Start Wind Loop",
+      action: () => sound.toggleAmbientWind(),
+    },
+    {
+      id: "whisper",
+      name: "Dual-Formant Whisper",
+      badge: "Vocal Resonance",
+      formula: "Shaped noise + Dual BPFs (F1: 650Hz, F2: 1350Hz)",
+      icon: Sparkles,
+      color: "text-emerald-400",
+      bg: "bg-emerald-500/10",
+      btnText: "Synthesize Whisper",
+      action: () => sound.playSeanceWhisper(1.4),
+    },
+    {
+      id: "gust",
+      name: "Autumnal Wind Gust",
+      badge: "Paul Kellet IIR",
+      formula: "3-Pole fractional filter sweep (260Hz → 680Hz → 220Hz)",
+      icon: Feather,
+      color: "text-orange-400",
+      bg: "bg-orange-500/10",
+      btnText: "Breeze Gust",
+      action: () => sound.playEtherealWind(1.2),
+    },
+    {
+      id: "infrasound",
+      name: "18.98Hz EVP Infrasound",
+      badge: "Ghost Frequency",
+      formula: "Eyeball resonance sine drop with 7.83Hz Schumann EMF",
+      icon: Activity,
+      color: "text-red-400",
+      bg: "bg-red-500/10",
+      btnText: "18.98Hz EVP Spike",
+      action: () => sound.playSpectralTone(189.8, 0.8),
+    },
+    {
+      id: "radar",
+      name: "1400Hz Radar Ping",
+      badge: "Doppler Chirp",
+      formula: "1400Hz → 800Hz exponential descent in 250ms",
+      icon: Radio,
+      color: "text-yellow-400",
+      bg: "bg-yellow-500/10",
+      btnText: "Ping Radar",
+      action: () => sound.playRadarPing(),
+    },
+    {
+      id: "geiger",
+      name: "Poisson Geiger Burst",
+      badge: "Ionizing Radiation",
+      formula: "4-click Poisson jittered square bursts (1600–2800Hz)",
+      icon: Zap,
+      color: "text-rose-400",
+      bg: "bg-rose-500/10",
+      btnText: "Geiger Burst",
+      action: () => sound.playGeigerBurst(4),
+    },
+  ];
 
   const showcases = [
     {
@@ -821,6 +916,68 @@ export default function OpenInnovationComparison({
           <div className="mt-5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center font-mono text-xs text-amber-300">
             ✨ {pillars[activeDimension].verdict}
           </div>
+        </div>
+      </section>
+
+      {/* 5.5 INTERACTIVE PROCEDURAL WEB AUDIO SOUNDBOARD LAB */}
+      <section className="rounded-3xl border border-zinc-800 bg-zinc-950/80 p-6 sm:p-8 relative overflow-hidden backdrop-blur-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800/80 pb-5">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono mb-2">
+              <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>ZERO-ASSET PROCEDURAL ACOUSTIC ENGINE (0 KB DOWNLOAD)</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              Interactive Web Audio Diagnostic Soundboard
+            </h3>
+            <p className="mt-1 text-xs sm:text-sm text-zinc-400 max-w-2xl">
+              Unlike cloud applications that fetch 20MB–50MB static audio files, Ghost in the Machine synthesizes 100% of soundwaves mathematically in client RAM via the Web Audio API. Test every oscillator node in real time:
+            </p>
+          </div>
+          <div className="px-3 py-1.5 rounded-xl bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-zinc-300 shrink-0 self-start sm:self-center">
+            Master Audio: <span className="text-emerald-400 font-bold">{sound.getMuted() ? "Muted" : `${Math.round(sound.getVolume() * 100)}%`}</span>
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          {soundboardNodes.map((node) => (
+            <div
+              key={node.id}
+              className="p-4 rounded-2xl border border-zinc-800/90 bg-zinc-900/50 hover:border-zinc-700 transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <div className={`p-2 rounded-xl ${node.bg}`}>
+                    <node.icon className={`w-4 h-4 ${node.color}`} />
+                  </div>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">
+                    {node.badge}
+                  </span>
+                </div>
+                <h4 className="text-sm font-bold text-zinc-200 group-hover:text-white transition-colors">
+                  {node.name}
+                </h4>
+                <p className="text-[11px] text-zinc-400 mt-1 leading-snug">
+                  {node.formula}
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  node.action();
+                  setLastTriggeredNode(node.id);
+                  setTimeout(() => setLastTriggeredNode(null), 1000);
+                }}
+                className={`mt-4 w-full py-2 px-3 rounded-xl border text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 ${
+                  lastTriggeredNode === node.id
+                    ? "bg-emerald-500/30 border-emerald-500 text-emerald-200 shadow-md"
+                    : "bg-zinc-800 hover:bg-zinc-700 border-zinc-700/80 text-zinc-200"
+                }`}
+              >
+                <span>{node.btnText}</span>
+              </button>
+            </div>
+          ))}
         </div>
       </section>
 
