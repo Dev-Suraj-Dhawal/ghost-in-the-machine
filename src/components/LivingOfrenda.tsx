@@ -83,6 +83,7 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
   const [selectedPioneer, setSelectedPioneer] = useState<DepartedPioneer | null>(DEPARTED_PIONEERS[0]);
   const [searchQuery, setSearchQuery] = useState("");
   const [relationshipFilter, setRelationshipFilter] = useState<string>("all");
+  const [spotlightTributeId, setSpotlightTributeId] = useState<string | null>(null);
   const [isExportingCard, setIsExportingCard] = useState(false);
   const [exportNotice, setExportNotice] = useState<string | null>(null);
 
@@ -566,6 +567,22 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
     e.target.value = "";
   };
 
+  const handleAncestralBlessing = () => {
+    if (customTributes.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * customTributes.length);
+    const chosen = customTributes[randomIndex];
+    setSpotlightTributeId(chosen.id);
+    sound.playCandleChime();
+    setExportNotice(
+      `Ancestral Blessing from ${chosen.name}: "${
+        chosen.cherishedMemory || chosen.favoriteSong || 'Recordar es vivir en el corazón de quienes amamos.'
+      }"`
+    );
+    setTimeout(() => {
+      setSpotlightTributeId(null);
+    }, 6000);
+  };
+
   return (
     <div className="relative w-full max-w-6xl mx-auto rounded-2xl border border-amber-900/60 bg-gradient-to-b from-[#140c06] via-[#0d0907] to-[#080504] shadow-2xl overflow-hidden backdrop-blur-xl">
       {/* Floating Canvas Petals Layer */}
@@ -902,14 +919,30 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
                   </button>
                 );
               })}
+
+              {/* Ancestral Blessing Shuffler Button */}
+              <button
+                onClick={handleAncestralBlessing}
+                className="sm:ml-auto px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/50 text-amber-300 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 shrink-0"
+                title="Draw an intuitive blessing and spotlight an ancestor"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                <span>Ancestral Blessing</span>
+              </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredFamily.map((t) => (
-                <div
-                  key={t.id}
-                  className="rounded-2xl border border-amber-800/40 bg-zinc-950/70 p-5 relative overflow-hidden backdrop-blur-md shadow-lg"
-                >
+              {filteredFamily.map((t) => {
+                const isSpotlight = spotlightTributeId === t.id;
+                return (
+                  <div
+                    key={t.id}
+                    className={`rounded-2xl border p-5 relative overflow-hidden backdrop-blur-md shadow-lg transition-all duration-500 ${
+                      isSpotlight
+                        ? "border-amber-400 bg-amber-950/60 shadow-2xl shadow-amber-500/30 ring-2 ring-amber-400/80 scale-[1.01]"
+                        : "border-amber-800/40 bg-zinc-950/70"
+                    }`}
+                  >
                   <div className="flex items-start gap-4">
                     <img
                       src={t.photoUrl}
@@ -981,7 +1014,8 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
                     </button>
                   </div>
                 </div>
-              ))}
+              );
+            })}
             </div>
 
             {filteredFamily.length === 0 && (
