@@ -41,7 +41,7 @@ const DECREE_COMMANDS: DecreeCommand[] = [
     title: "Codex of Forbidden Spells",
     category: "Discovery",
     decreeDetail: "Unfurls the sacred inventory of all available terminal commands and ethereal shortcuts.",
-    astralConsequence: "Displays 'seance', 'whisper', 'ofrenda', 'investigate', 'possessed', and 'cat'.",
+    astralConsequence: "Displays available spells; press TAB in the terminal prompt anytime to autocomplete.",
   },
   {
     command: "seance ada",
@@ -574,10 +574,10 @@ export default function BeginnerGuideModal({
 
                   <div className="p-4 rounded-sm bg-amber-50/80 border border-amber-800/30">
                     <div className="font-bold text-amber-900 text-xs font-serif mb-1">
-                      Exporting Telemetry Dossiers (.txt, .json, .csv)
+                      Exporting Telemetry Dossiers (.txt, .md, .json, .csv)
                     </div>
                     <p className="text-xs text-amber-900/80 leading-relaxed">
-                      Export midnight telemetry data directly to Microsoft Excel, Google Sheets, or Python with one-click CSV export to analyze simulated cold-spot drops and electromagnetic anomalies.
+                      Export midnight telemetry data directly to GitHub Markdown reports, Microsoft Excel, Google Sheets, or Python with one-click export to analyze simulated cold-spot drops and electromagnetic anomalies.
                     </p>
                   </div>
                 </div>

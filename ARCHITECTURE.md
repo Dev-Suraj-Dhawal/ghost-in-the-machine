@@ -123,6 +123,14 @@ When exporting family memorials, `LivingOfrenda.tsx` renders a high-resolution 1
 
 The Living Ofrenda provides multi-lingual regex and keyword classification partitioning family tributes into distinct bonds (`Grandparents`, `Parents`, `Mentors`, `Friends & Siblings`, `Pets & Companions`) across both English and Mexican Spanish roots (`abuel*`, `madre/padre`, `maestr*`, `amig*/herman*`, `mascota`).
 
+### 3.4 Ancestral Blessing Spotlight & Random Tribute Drawer
+
+To encourage individual contemplation and prevent memorials from fading into static lists, `LivingOfrenda.tsx` features an Ancestral Blessing drawer:
+- **Random Reservoir Selection**: Uniformly draws an ancestor card from the combined built-in and user-memorial registry:
+  $$i_{\text{blessed}} = \lfloor \mathcal{U}(0, 1) \cdot N_{\text{memorials}} \rfloor$$
+- **Visual Spotlight Focusing**: Sets `spotlightId`, applying an active amber illumination ring (`ring-2 ring-amber-400/80 scale-[1.01]`), smooth scroll alignment, and a 4.5-second temporal decay window.
+- **Auditory Consecration**: Fires `sound.playSolfeggioBell()` (528Hz crystal chime) upon invocation to mark the moment of remembrance.
+
 ---
 
 ## 4. Zero-Knowledge Client Inference Architecture
@@ -156,6 +164,23 @@ $$H(D) = \sum_{i=0}^{|D|-1} c_i \cdot 31^{|D|-1-i} \pmod{2^{32}}$$
 $$k = |H(D)| \pmod N$$
 where $N = |\text{cards}|$ and $c_i$ is the ASCII code of character $i$.
 This guarantees deterministic parity: all airgapped devices running Ghost in the Machine draw the exact same daily patron pioneer and prophecy on any given day without network sync.
+
+### 4.4 Possessed Shell Cycle-Enabled TAB Autocompletion Engine
+
+In `NecroShell.tsx`, user keystrokes on the <kbd>TAB</kbd> key intercept the default browser focus cycle and trigger local prefix-matching against the comprehensive spell dictionary:
+- **Prefix Candidate Matching**: Computes match candidates $C(p) = \{ s \in \mathcal{D} \mid s \text{ starts with } p \}$, where $\mathcal{D}$ includes base commands (`help`, `clear`, `seance`, `whisper`, `necrostat`, `oracle`, `fortune`, `investigate`, `possessed`, `cat`, `banner`) as well as compound séance invitations (`seance ada`, `seance turing`, `seance hopper`, etc.).
+- **Cyclic Selection Pointer**: Repeated <kbd>TAB</kbd> taps advance a persistent index:
+  $$i_{k+1} = (i_k + 1) \pmod{|C(p)|}$$
+- **Acoustic Haptic Feedback**: Triggers `sound.playTypewriterClick()` on each match cycle, reinforcing the tactile sensation of physical teleprinter tabulators.
+
+### 4.5 Multi-Format Paranormal Dossier Serialization Pipeline
+
+`PhantomInvestigator.tsx` exposes client-side multi-format data synthesis converting live IoT sensor readings into transportable investigative dossiers without network transmission:
+1. **Plain Text (`.txt`)**: Monospaced ASCII summary tables displaying anomaly score, cold-spot variance, and sensor log traces.
+2. **Markdown Dossier (`.md`)**: GitHub-flavored Markdown document with metadata tables, formatted alert levels, and code blocks for immediate embedding into GitHub pull requests and developer issue tickets.
+3. **Structured JSON (`.json`)**: Machine-readable schema with timestamps, sensor vectors, and threat classifications for data science pipelines.
+4. **Tabular CSV (`.csv`)**: Comma-delimited sensor matrices compatible with Microsoft Excel, pandas, and Google Sheets.
+All exports generate ephemeral Object URLs via `URL.createObjectURL(new Blob([content], { type: mimeType }))` and trigger instantaneous DOM anchoring before revoking the temporary object.
 
 ---
 
