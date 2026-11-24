@@ -290,12 +290,65 @@ export default function NecroShell({
     setTimeout(focusTerminal, 60);
   };
 
+  const AUTOCOMPLETE_COMMANDS = [
+    "help",
+    "whoami",
+    "ls",
+    "cat hopper",
+    "cat ada",
+    "cat turing",
+    "cat ritchie",
+    "cat hamilton",
+    "seance ada",
+    "seance turing",
+    "seance hopper",
+    "seance ritchie",
+    "seance hedy",
+    "seance hamilton",
+    "pioneers",
+    "oracle",
+    "oracle --daily",
+    "rain",
+    "synth",
+    "necrostat",
+    "whisper",
+    "possessed",
+    "ofrenda",
+    "investigate",
+    "manifesto",
+    "manual",
+    "clear",
+  ];
+
+  const handleTabAutocomplete = () => {
+    const trimmed = inputVal.trimStart().toLowerCase();
+    if (!trimmed) {
+      setInputVal("help");
+      sound.playKeyClick();
+      return;
+    }
+
+    const matches = AUTOCOMPLETE_COMMANDS.filter((c) => c.startsWith(trimmed));
+    if (matches.length === 1) {
+      setInputVal(matches[0]);
+      sound.playKeyClick();
+    } else if (matches.length > 1) {
+      const currentIdx = matches.indexOf(inputVal.toLowerCase());
+      const nextIdx = (currentIdx + 1) % matches.length;
+      setInputVal(matches[nextIdx]);
+      sound.playKeyClick();
+    }
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     sound.playKeyClick();
 
     if (e.key === "Enter") {
       e.preventDefault();
       executeCommand(inputVal);
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      handleTabAutocomplete();
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       if (cmdHistory.length === 0) return;
@@ -474,6 +527,13 @@ export default function NecroShell({
             className="w-full bg-transparent text-emerald-200 outline-none font-mono text-sm placeholder:text-zinc-600 focus:ring-0 cursor-text select-text"
             autoFocus
           />
+          <kbd
+            className="hidden sm:inline-flex items-center text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-800/90 text-zinc-400 border border-zinc-700/80 shrink-0 select-none cursor-pointer hover:text-emerald-300 transition-colors"
+            title="Press TAB to autocomplete commands and pioneer séances"
+            onClick={handleTabAutocomplete}
+          >
+            TAB
+          </kbd>
         </div>
       </div>
 
