@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { X, Sparkles, HelpCircle, MessageSquareQuote, ChevronUp } from "lucide-react";
+import { X, Sparkles, HelpCircle, MessageSquareQuote, ChevronUp, Copy, Check } from "lucide-react";
 import { AppTheme } from "@/App";
 import { sound } from "@/lib/soundEngine";
 
@@ -85,6 +85,21 @@ const GHOST_TIPS = [
     actionLabel: "Open Radar",
     tab: "investigator" as const,
   },
+  {
+    text: "Need terminal speed? ⚡ Press TAB in NecroShell to autocomplete commands and pioneer séances instantly!",
+    actionLabel: "Try TAB Spell",
+    tab: "terminal" as const,
+  },
+  {
+    text: "Seeking guidance? 🌼 Draw a random Ancestral Blessing in the Living Ofrenda with a 528Hz Solfeggio spotlight!",
+    actionLabel: "Draw Blessing",
+    tab: "ofrenda" as const,
+  },
+  {
+    text: "Investigating midnight anomalies? 📁 Export structured Markdown dossiers (.md) ready to paste into GitHub issues!",
+    actionLabel: "Export Dossier",
+    tab: "investigator" as const,
+  },
 ];
 
 export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMascotProps) {
@@ -98,9 +113,33 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
   const [isBlinking, setIsBlinking] = useState(false);
   const [isExcited, setIsExcited] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [floatingParticles, setFloatingParticles] = useState<
     { id: number; x: number; y: number; glyph: string }[]
   >([]);
+
+  // Reset copied status whenever tip changes
+  useEffect(() => {
+    setCopied(false);
+  }, [currentTipIndex]);
+
+  // Listen to global toggle event (e.g. keyboard shortcut 'G' or header capsule)
+  useEffect(() => {
+    const handleToggleEvent = () => {
+      setIsMinimized((prev) => {
+        const next = !prev;
+        localStorage.setItem("ghost_mascot_minimized", String(next));
+        try {
+          sound.playKeyClick();
+        } catch {
+          // ignore
+        }
+        return next;
+      });
+    };
+    window.addEventListener("toggle-ghost-mascot", handleToggleEvent);
+    return () => window.removeEventListener("toggle-ghost-mascot", handleToggleEvent);
+  }, []);
 
   // Theme palettes
   const colors = {
@@ -168,7 +207,7 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
     }
 
     // Spawn floating mini sparks with themed folklore glyphs
-    const GLYPHS = ["✨", "⭐", "🌼", "💀", "🎵", "🕯️"];
+    const GLYPHS = ["✨", "⭐", "🌼", "💀", "🎵", "🕯️", "⚡", "🔮"];
     const newParticles = Array.from({ length: 6 }, (_, i) => ({
       id: Date.now() + i,
       x: Math.random() * 60 - 30,
@@ -184,6 +223,19 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
   };
 
   const activeTip = GHOST_TIPS[currentTipIndex];
+  const backtickMatch = activeTip.text.match(/`([^`]+)`/);
+  const commandToCopy = backtickMatch ? backtickMatch[1] : null;
+
+  const handleCopyCommand = async (cmd: string) => {
+    try {
+      await navigator.clipboard.writeText(cmd);
+      setCopied(true);
+      sound.playKeyClick();
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  };
 
   if (isMinimized) {
     return (
@@ -232,9 +284,14 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
         </button>
 
         {/* Tip Header */}
-        <div className="flex items-center gap-1.5 mb-1.5 text-[10px] uppercase tracking-wider font-bold text-zinc-400">
-          <MessageSquareQuote className="w-3 h-3 text-amber-400" />
-          <span>Fantasma's Grimoire Tip</span>
+        <div className="flex items-center justify-between mb-1.5 text-[10px] uppercase tracking-wider font-bold text-zinc-400">
+          <div className="flex items-center gap-1.5">
+            <MessageSquareQuote className="w-3 h-3 text-amber-400" />
+            <span>Fantasma's Grimoire</span>
+          </div>
+          <span className="font-mono text-zinc-500 text-[9px] mr-5 select-none">
+            {currentTipIndex + 1}/{GHOST_TIPS.length}
+          </span>
         </div>
 
         {/* Tip Text */}
@@ -243,19 +300,40 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
         </p>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2 pt-1 border-t border-zinc-800 text-[10px]">
+        <div className="flex items-center gap-1.5 pt-1 border-t border-zinc-800 text-[10px] flex-wrap">
           {activeTip.tab && onSwitchTab && (
             <button
               onClick={() => onSwitchTab(activeTip.tab!)}
-              className={`px-2.5 py-1 rounded-md bg-zinc-800 hover:bg-zinc-700 font-semibold ${colors.accent} border border-zinc-700 transition-colors`}
+              className={`px-2.5 py-1 rounded-md bg-zinc-800 hover:bg-zinc-700 font-semibold ${colors.accent} border border-zinc-700 transition-colors cursor-pointer`}
             >
               {activeTip.actionLabel}
             </button>
           )}
 
+          {commandToCopy && (
+            <button
+              onClick={() => handleCopyCommand(commandToCopy)}
+              className="flex items-center gap-1 px-2 py-1 rounded-md bg-zinc-800/90 hover:bg-zinc-700 font-mono text-[10px] text-amber-300 border border-zinc-700 transition-colors cursor-pointer"
+              title={`Copy '${commandToCopy}' to clipboard`}
+              aria-label={`Copy '${commandToCopy}'`}
+            >
+              {copied ? (
+                <>
+                  <Check className="w-2.5 h-2.5 text-emerald-400" />
+                  <span className="text-emerald-300">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-2.5 h-2.5 text-zinc-400" />
+                  <span>{commandToCopy}</span>
+                </>
+              )}
+            </button>
+          )}
+
           <button
             onClick={onOpenGuide}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-semibold border border-amber-500/30 transition-colors ml-auto"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-semibold border border-amber-500/30 transition-colors ml-auto cursor-pointer"
           >
             <HelpCircle className="w-3 h-3" />
             <span>Manual</span>
@@ -263,7 +341,7 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
 
           <button
             onClick={handleGhostClick}
-            className="px-1.5 py-1 text-zinc-400 hover:text-zinc-200 transition-colors"
+            className="px-1.5 py-1 text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
             title="Next tip"
             aria-label="Next tip"
           >
