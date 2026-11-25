@@ -243,6 +243,7 @@ The application implements a dedicated keyboard router in `App.tsx` mapped to th
 | <kbd>D</kbd> | Toggle `isAmbientDroneOn` (55Hz sub-bass + 0.12Hz LFO) | Exponential filter crossfade |
 | <kbd>W</kbd> | Toggle `isAmbientWindOn` (Continuous pink-noise autumnal breeze) | LFO swept bandpass filter fade |
 | <kbd>C</kbd> | Toggle `ghostCursorEnabled` (Canvas particle physics reticle) | Instant reticle engage/disengage |
+| <kbd>G</kbd> | Toggle Ghost Mascot (`toggle-ghost-mascot` custom event) | Typewriter key click & mascot toggle |
 | <kbd>H</kbd> | Toggle `showGuideModal` (English Royal Farman Scroll) | Solfeggio 528Hz bell chime |
 | <kbd>?</kbd> | Toggle `showShortcutsModal` (Quick keyboard reference cheatsheet) | Keyboard UI focus |
 

@@ -87,6 +87,7 @@ Operate the entire paranormal station without touching your mouse:
 | <kbd>D</kbd> | **Toggle Nocturnal Drone** | Enable/disable the 55Hz sub-bass ambient atmospheric drone |
 | <kbd>W</kbd> | **Toggle Autumn Wind** | Enable/disable the continuous procedural pink-noise wind soundscape |
 | <kbd>C</kbd> | **Toggle Ghost Cursor** | Enable/disable custom ghost pointer & ectoplasm particle physics |
+| <kbd>G</kbd> | **Toggle Ghost Mascot** | Summon or minimize Fantasma companion with interactive tips |
 | <kbd>T</kbd> | **Cycle Theme Palette** | Rotate between Cempasúchil Gold, Spectral Green & Bloodmoon Crimson |
 | <kbd>H</kbd> | **Beginner's Manual** | Open the interactive Apprentice Grimoire with example commands |
 | <kbd>?</kbd> | **Shortcuts Cheatsheet** | Display or dismiss the quick keyboard shortcut reference dialog |
@@ -103,8 +104,9 @@ Operate the entire paranormal station without touching your mouse:
 
 2. **Interactive Halloween Ghost Mascot ("Fantasma")**:
    - An animated floating ghost mascot hovering in the corner with gentle sine-wave flotation and periodic eye-blinking.
-   - Delivers contextual cyber-folklore tips and terminal prompt suggestions in an interactive speech bubble.
-   - Click the mascot to trigger celebratory chime sounds, floating star particles, and quick tip cycles! Can be minimized into a sleek floating badge anytime.
+   - Delivers contextual cyber-folklore tips and terminal prompt suggestions in an interactive speech bubble with a live counter (`Tip X/Y`).
+   - Features one-click **"Copy Prompt"** buttons (`Copy`/`Copied!`) directly in the speech bubble to grab featured spells (`seance hopper`, `necrostat`, `oracle`) with instant typewriter audio feedback.
+   - Click the mascot to trigger celebratory chime sounds, floating star and folklore particles (`✨`, `⭐`, `🌼`, `💀`, `⚡`, `🔮`), and quick tip cycles! Can be summoned or minimized via the header capsule, speech bubble button, or pressing <kbd>G</kbd>.
 
 3. **Beginner's Grimoire & Quick-Start Manual**:
    - An interactive handbook providing step-by-step guidance on what to type in `NecroShell` (`seance ada`, `whisper <query>`, `cat hopper`, `possessed`), how to celebrate in the `Living Ofrenda`, and how to read the `Phantom Investigator` radar.
