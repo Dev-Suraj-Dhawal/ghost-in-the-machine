@@ -15,6 +15,7 @@ import {
   Menu,
   ExternalLink,
   BookOpen,
+  MessageSquareQuote,
 } from "lucide-react";
 import NecroShell from "@/components/NecroShell";
 import LivingOfrenda from "@/components/LivingOfrenda";
@@ -95,6 +96,8 @@ export default function App() {
         handleToggleWind();
       } else if (e.key === "c" || e.key === "C") {
         handleToggleGhostCursor();
+      } else if (e.key === "g" || e.key === "G") {
+        window.dispatchEvent(new CustomEvent("toggle-ghost-mascot"));
       } else if (e.key === "t" || e.key === "T") {
         cycleTheme();
       } else if (e.key === "h" || e.key === "H") {
@@ -378,6 +381,16 @@ export default function App() {
                 aria-label="Toggle Ghost Cursor"
               >
                 <span className="text-[11px]">👻</span>
+              </button>
+
+              {/* Ghost Mascot Toggle */}
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent("toggle-ghost-mascot"))}
+                className="w-7 h-7 rounded-full flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors cursor-pointer"
+                title="Toggle Fantasma Mascot (G)"
+                aria-label="Toggle Fantasma Mascot"
+              >
+                <MessageSquareQuote className="w-3.5 h-3.5 text-amber-400/90" />
               </button>
 
               {/* Keyboard Shortcuts Modal */}
@@ -683,6 +696,10 @@ export default function App() {
               <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
                 <span className="text-zinc-300">Toggle Ghost Pointer</span>
                 <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">C</kbd>
+              </div>
+              <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
+                <span className="text-zinc-300">Toggle Ghost Mascot (Fantasma)</span>
+                <kbd className="px-2 py-1 rounded bg-zinc-900 border border-zinc-700 font-mono text-amber-400">G</kbd>
               </div>
               <div className="flex justify-between items-center py-1.5 border-b border-zinc-800/80">
                 <span className="text-zinc-300">Cycle Theme Palette</span>
