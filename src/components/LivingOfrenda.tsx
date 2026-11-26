@@ -660,6 +660,25 @@ export default function LivingOfrenda({ onBackToTerminal }: LivingOfrendaProps) 
             <span>{exportNotice}</span>
           </div>
         )}
+
+        {/* Live Vigil Stats */}
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-[11px] font-mono select-none">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-950/50 border border-amber-800/50 text-amber-300">
+            <Flame className="w-3 h-3 text-amber-400 animate-pulse" />
+            <span className="font-bold">{candles.length}</span>
+            <span className="text-amber-400/70">candles lit</span>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-950/40 border border-rose-800/40 text-rose-300">
+            <Heart className="w-3 h-3 text-rose-400" />
+            <span className="font-bold">{new Set(candles.map((c) => c.senderName)).size}</span>
+            <span className="text-rose-300/70">vigil-keepers</span>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-purple-950/40 border border-purple-800/40 text-purple-300">
+            <Sparkles className="w-3 h-3 text-purple-400" />
+            <span className="font-bold">{customTributes.length}</span>
+            <span className="text-purple-300/70">honored souls</span>
+          </div>
+        </div>
       </div>
 
       {/* Tabs */}
