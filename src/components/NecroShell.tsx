@@ -54,6 +54,20 @@ export default function NecroShell({
   const [isMuted, setIsMuted] = useState<boolean>(propIsMuted !== undefined ? propIsMuted : sound.getMuted());
   const [presenceScore, setPresenceScore] = useState(78);
   const [isFocused, setIsFocused] = useState(true);
+  const [sessionSeconds, setSessionSeconds] = useState(0);
+
+  // Live session uptime clock
+  useEffect(() => {
+    const uptimeTick = setInterval(() => setSessionSeconds((s) => s + 1), 1000);
+    return () => clearInterval(uptimeTick);
+  }, []);
+
+  const formatUptime = (secs: number) => {
+    const h = Math.floor(secs / 3600).toString().padStart(2, "0");
+    const m = Math.floor((secs % 3600) / 60).toString().padStart(2, "0");
+    const s = (secs % 60).toString().padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
 
   // Subscribe to SoundEngine volume changes so system volume is 100% synchronized
   useEffect(() => {
@@ -451,6 +465,12 @@ export default function NecroShell({
             <Skull className="w-3.5 h-3.5 text-purple-400" />
             <span className="hidden sm:inline text-zinc-400">Spectral Sync:</span>
             <span className="text-emerald-400 font-bold">{presenceScore}%</span>
+          </div>
+
+          {/* 3. Live Session Uptime Clock */}
+          <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-zinc-700/50 bg-zinc-900/50 text-xs font-mono">
+            <span className="text-zinc-500">UP</span>
+            <span className="text-amber-300 font-bold tabular-nums">{formatUptime(sessionSeconds)}</span>
           </div>
         </div>
       </div>
