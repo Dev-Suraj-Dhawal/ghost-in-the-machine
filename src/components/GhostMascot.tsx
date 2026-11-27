@@ -114,9 +114,30 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
   const [isBlinking, setIsBlinking] = useState(false);
   const [isExcited, setIsExcited] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isShaking, setIsShaking] = useState(false);
+  const [hauntSeconds, setHauntSeconds] = useState(0);
   const [floatingParticles, setFloatingParticles] = useState<
     { id: number; x: number; y: number; glyph: string }[]
   >([]);
+
+  // Live haunt timer
+  useEffect(() => {
+    const tick = setInterval(() => setHauntSeconds((s) => s + 1), 1000);
+    return () => clearInterval(tick);
+  }, []);
+
+  // Periodic ghost shiver — every 5 minutes (300s) the ghost rattles
+  useEffect(() => {
+    if (hauntSeconds > 0 && hauntSeconds % 300 === 0) {
+      setIsShaking(true);
+      try {
+        sound.playSpectralTone(220, 0.2);
+      } catch {
+        // ignore
+      }
+      setTimeout(() => setIsShaking(false), 700);
+    }
+  }, [hauntSeconds]);
 
   // Reset copied status whenever tip changes
   useEffect(() => {
@@ -238,6 +259,8 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
   };
 
   if (isMinimized) {
+    const hh = Math.floor(hauntSeconds / 3600).toString().padStart(2, "0");
+    const mm = Math.floor((hauntSeconds % 3600) / 60).toString().padStart(2, "0");
     return (
       <aside aria-label="Ghost companion" className="fixed bottom-5 right-5 z-40">
         <button
@@ -248,6 +271,9 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
         >
           <span className="text-base animate-bounce">👻</span>
           <span className="hidden sm:inline font-semibold">Summon Fantasma</span>
+          {hauntSeconds >= 60 && (
+            <span className="text-[9px] font-mono text-zinc-400 tabular-nums">{hh}:{mm}</span>
+          )}
           <ChevronUp className="w-3.5 h-3.5 text-zinc-400 group-hover:translate-y-[-2px] transition-transform" />
         </button>
       </aside>
@@ -359,10 +385,10 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
         onClick={handleGhostClick}
         aria-label="Interactive Halloween ghost mascot. Click for tips and chime."
         className={`pointer-events-auto cursor-pointer focus:outline-none transition-transform duration-300 relative group text-left ${
-          isExcited ? "scale-115 -translate-y-4" : "hover:scale-105"
+          isExcited ? "scale-115 -translate-y-4" : isShaking ? "animate-bounce" : "hover:scale-105"
         }`}
         style={{
-          animation: isExcited ? "none" : "floatGhost 3.8s ease-in-out infinite",
+          animation: isExcited ? "none" : isShaking ? "ghostShiver 0.1s ease-in-out 7" : "floatGhost 3.8s ease-in-out infinite",
         }}
       >
         {/* Glow Aura */}
@@ -477,6 +503,13 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
             50% {
               transform: translateY(-9px) rotate(2deg);
             }
+          }
+          @keyframes ghostShiver {
+            0%, 100% { transform: translateX(0px); }
+            20% { transform: translateX(-4px) rotate(-2deg); }
+            40% { transform: translateX(4px) rotate(2deg); }
+            60% { transform: translateX(-3px) rotate(-1deg); }
+            80% { transform: translateX(3px) rotate(1deg); }
           }
         `}</style>
       </button>
