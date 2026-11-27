@@ -16,6 +16,7 @@ import {
   Play,
   Square,
   Filter,
+  Trash2,
 } from "lucide-react";
 import { SensorLogEntry, AIInferenceConfig } from "@/lib/types";
 import { weaveParanormalInvestigation } from "@/lib/aiEngine";
@@ -78,6 +79,24 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
   const [isWeaving, setIsWeaving] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<"all" | SensorLogEntry["eventType"]>("all");
   const [isLiveStreamOn, setIsLiveStreamOn] = useState(false);
+  const [peakAnomaly, setPeakAnomaly] = useState<number>(
+    Math.max(...INITIAL_LOGS.map((l) => l.anomalyScore))
+  );
+
+  // Track peak anomaly score whenever logs change
+  useEffect(() => {
+    if (logs.length > 0) {
+      setPeakAnomaly(Math.max(...logs.map((l) => l.anomalyScore)));
+    }
+  }, [logs]);
+
+  const handleClearLogs = () => {
+    sound.playGeigerClick();
+    sound.playSpectralTone(220, 0.3);
+    setLogs(INITIAL_LOGS);
+    setDossierReport("");
+    setPeakAnomaly(Math.max(...INITIAL_LOGS.map((l) => l.anomalyScore)));
+  };
 
   // New log form state
   const [newDevice, setNewDevice] = useState("");
@@ -448,6 +467,15 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
           </button>
 
           <button
+            onClick={handleClearLogs}
+            className="px-3 py-2 rounded-xl border border-zinc-700/60 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-400 hover:text-rose-400 text-xs font-mono font-bold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+            title="Reset telemetry feed to initial logs"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Clear Logs</span>
+          </button>
+
+          <button
             onClick={handleWeaveReport}
             disabled={isWeaving}
             className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-mono text-xs font-bold transition-all shadow-lg flex items-center gap-2 shrink-0 disabled:opacity-50"
@@ -487,6 +515,15 @@ export default function PhantomInvestigator({ aiConfig }: PhantomInvestigatorPro
           </span>
           <span className="px-2 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-zinc-400">
             {normalCount} Moderate
+          </span>
+          <span className={`px-2 py-0.5 rounded border font-bold ${
+            peakAnomaly >= 10
+              ? "bg-red-950/80 border-red-500/60 text-red-300"
+              : peakAnomaly >= 8
+              ? "bg-amber-950/80 border-amber-500/60 text-amber-300"
+              : "bg-zinc-900 border-zinc-700 text-zinc-400"
+          }`}>
+            Peak: {peakAnomaly}/10
           </span>
         </div>
       </div>
