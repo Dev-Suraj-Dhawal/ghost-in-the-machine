@@ -100,6 +100,16 @@ const GHOST_TIPS = [
     actionLabel: "Export Dossier",
     tab: "investigator" as const,
   },
+  {
+    text: "Type `help --verbose` in NecroShell to open the full Command Grimoire — all commands, shortcuts, and séance spells listed!",
+    actionLabel: "Open Terminal",
+    tab: "terminal" as const,
+  },
+  {
+    text: "Press 'G' on your keyboard anytime to summon or banish Fantasma without touching the mouse — perfect for quick tips on the fly!",
+    actionLabel: "Try 'G' Key",
+    tab: undefined,
+  },
 ];
 
 export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMascotProps) {
@@ -373,6 +383,12 @@ export default function GhostMascot({ theme, onOpenGuide, onSwitchTab }: GhostMa
           >
             ➔
           </button>
+        </div>
+
+        {/* Hotkey discovery hint */}
+        <div className="mt-2 flex items-center gap-1 text-[9px] font-mono text-zinc-600 select-none">
+          <kbd className="px-1 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-500 text-[9px]">G</kbd>
+          <span>to hide · click ghost for next tip</span>
         </div>
 
         {/* Speech bubble pointer arrow */}
