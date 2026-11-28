@@ -55,6 +55,7 @@ export default function NecroShell({
   const [presenceScore, setPresenceScore] = useState(78);
   const [isFocused, setIsFocused] = useState(true);
   const [sessionSeconds, setSessionSeconds] = useState(0);
+  const [exorcismFlash, setExorcismFlash] = useState(false);
 
   // Live session uptime clock
   useEffect(() => {
@@ -161,6 +162,60 @@ export default function NecroShell({
     const action = parts[0]?.toLowerCase();
 
     // Check custom commands
+    if (action === "help" && parts[1] === "--verbose") {
+      sound.playSpectralTone(440, 0.3);
+      const verboseHelp =
+        "━━━ NECROSHELL v3.13 — COMMAND GRIMOIRE (verbose) ━━━\n" +
+        "\n[NAVIGATION]\n" +
+        "  ofrenda          → Open the Living Ofrenda altar sanctuary\n" +
+        "  investigate      → Launch Phantom Investigator telemetry radar\n" +
+        "  manifesto        → Open Open-Innovation Manifesto tab\n" +
+        "  manual / guide   → Open the interactive User Manual overlay\n" +
+        "\n[SÉANCE & AI]\n" +
+        "  seance <name>    → Summon a departed computing pioneer via local AI\n" +
+        "  whisper <query>  → Ask the Ghost in the Machine directly\n" +
+        "  possessed        → Trigger CRT chromatic aberration phantom corruption\n" +
+        "\n[TERMINAL LORE]\n" +
+        "  oracle           → Draw a randomized Silicon Tarot card\n" +
+        "  oracle --daily   → Draw today's deterministic daily oracle card\n" +
+        "  fortune / destiny→ Receive a spectral fortune prophecy\n" +
+        "  pioneers         → List all honored departed computing pioneers\n" +
+        "  cat <name>       → Inspect a pioneer's manifesto (ada, turing, hopper…)\n" +
+        "  whoami           → Identify your spectral shell session\n" +
+        "\n[SYSTEM TELEMETRY]\n" +
+        "  necrostat / top  → Run spectral process monitor (soul PIDs & memory)\n" +
+        "  status / ps      → Check astral system health diagnostics\n" +
+        "\n[AUDIO & EFFECTS]\n" +
+        "  synth / audio    → Trigger procedural Solfeggio 528Hz synthesis\n" +
+        "  soundboard       → Activate acoustic engine showcase\n" +
+        "  rain / matrix    → Toggle ethereal rain / matrix rain visual\n" +
+        "\n[UTILITY]\n" +
+        "  ls               → List spectral directory contents\n" +
+        "  help             → Show brief command list\n" +
+        "  help --verbose   → Show this full grimoire\n" +
+        "  clear            → Exorcise terminal history with flash ritual\n" +
+        "\n[KEYBOARD SHORTCUTS]\n" +
+        "  TAB              → Autocomplete commands & pioneer séances\n" +
+        "  ↑ / ↓            → Browse command history\n" +
+        "  G                → Toggle Ghost Mascot visibility\n" +
+        "  T                → Cycle theme (Cempasúchil / Spectral / Bloodmoon)\n" +
+        "  D                → Toggle 55Hz sub-bass ambient séance drone\n" +
+        "  W                → Toggle procedural autumn wind ambient loop";
+      setHistory((prev) => [
+        ...prev,
+        {
+          id: "resp-" + Date.now(),
+          command: cmd,
+          output: verboseHelp,
+          type: "system" as const,
+          timestamp: new Date().toLocaleTimeString(),
+        },
+      ]);
+      setIsProcessing(false);
+      setTimeout(focusTerminal, 60);
+      return;
+    }
+
     if (action === "ofrenda") {
       sound.playCandleChime();
       sound.playEtherealWind(0.8);
@@ -280,7 +335,13 @@ export default function NecroShell({
     // Standard possessed command parser
     const parsed = parsePossessedCommand(cmd);
     if (parsed.output === "__CLEAR__") {
-      setHistory([]);
+      // Flash "TERMINAL EXORCISED" for 900ms before wiping history
+      sound.playGlitchBuzz();
+      setExorcismFlash(true);
+      setTimeout(() => {
+        setExorcismFlash(false);
+        setHistory([]);
+      }, 900);
       setIsProcessing(false);
       setTimeout(focusTerminal, 60);
       return;
@@ -306,6 +367,7 @@ export default function NecroShell({
 
   const AUTOCOMPLETE_COMMANDS = [
     "help",
+    "help --verbose",
     "whoami",
     "ls",
     "cat hopper",
@@ -396,6 +458,15 @@ export default function NecroShell({
               ⚠ PHANTOM CORRUPTION ⚠
             </span>
           </div>
+        </div>
+      )}
+
+      {/* Exorcism Clear Flash Overlay */}
+      {exorcismFlash && (
+        <div className="absolute inset-0 bg-emerald-900/60 z-30 pointer-events-none flex items-center justify-center">
+          <span className="font-mono text-3xl sm:text-4xl font-black tracking-widest text-emerald-300 uppercase animate-pulse select-none">
+            ☩ TERMINAL EXORCISED ☩
+          </span>
         </div>
       )}
 
