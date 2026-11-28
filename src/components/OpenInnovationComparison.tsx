@@ -27,6 +27,8 @@ import {
   Volume2,
   Waves,
   Wind,
+  Copy,
+  Check,
 } from "lucide-react";
 import { AIInferenceConfig } from "@/lib/types";
 import { sound } from "@/lib/soundEngine";
@@ -55,6 +57,22 @@ export default function OpenInnovationComparison({
     message: "",
   });
   const [lastTriggeredNode, setLastTriggeredNode] = useState<string | null>(null);
+  const [pledgeCopied, setPledgeCopied] = useState(false);
+
+  const MANIFESTO_PLEDGE =
+    "I believe in Ghost in the Machine: 100% open-source, 0 KB surveillance, 100% local AI inference. " +
+    "Every soul stays private. Every byte stays yours. #GhostInTheMachine #OpenSourceAI https://ghost-in-the-machine-kappa.vercel.app";
+
+  const handleCopyPledge = async () => {
+    try {
+      await navigator.clipboard.writeText(MANIFESTO_PLEDGE);
+      setPledgeCopied(true);
+      sound.playCandleChime();
+      setTimeout(() => setPledgeCopied(false), 3000);
+    } catch {
+      // ignore clipboard errors
+    }
+  };
 
   const soundboardNodes = [
     {
@@ -915,6 +933,31 @@ export default function OpenInnovationComparison({
           {/* Bottom Verdict Banner */}
           <div className="mt-5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center font-mono text-xs text-amber-300">
             ✨ {pillars[activeDimension].verdict}
+          </div>
+
+          {/* Copy Manifesto Pledge CTA */}
+          <div className="mt-3 flex items-center justify-center">
+            <button
+              onClick={handleCopyPledge}
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer active:scale-95 ${
+                pledgeCopied
+                  ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-300"
+                  : "bg-zinc-900 hover:bg-zinc-800 border-zinc-700 text-zinc-300 hover:text-white"
+              }`}
+              title="Copy a shareable manifesto pledge to your clipboard"
+            >
+              {pledgeCopied ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Pledge Copied — Share It!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Copy Manifesto Pledge</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </section>
