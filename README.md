@@ -242,3 +242,16 @@ Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more informa
 <div align="center">
   <p>Dedicated to all the pioneers who laid the foundations of computing, and to our beloved departed who live forever in our memories. üïØÔ∏èüåºüíÄ</p>
 </div>
+
+## Recent Feature Additions (2026-11-28)
+
+### NecroShell Terminal
+- **clear Exorcism Flash**: Typing clear now triggers a glowing ? TERMINAL EXORCISED ? overlay flash with a playGlitchBuzz() sound cue before wiping history. 
+- **help --verbose**: New command opens the full Command Grimoire ó all 20+ commands, navigation, sÈance AI, audio, and all keyboard shortcuts in one scrollable ASCII table.
+
+### Ghost Mascot
+- **G-key hotkey hint**: The speech bubble footer now shows a subtle [G] to hide ∑ click ghost for next tip badge, helping users discover the keyboard shortcut.
+- **2 new Grimoire tips**: Tips for help --verbose and the G key shortcut added to the tip rotation (now 20 total).
+
+### Manifesto Tab
+- **Copy Manifesto Pledge**: New clipboard button below the Comparison Verdict banner. Copies a shareable one-liner pledge about open-source AI and privacy with a 528Hz Solfeggio chime confirmation.
